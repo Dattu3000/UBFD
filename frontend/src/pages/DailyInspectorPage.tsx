@@ -5,6 +5,7 @@ import { api } from '@/lib/api-client';
 import { BankAccount, DailyLedgerResponse } from '@/types/finance';
 import { DateInspectorPicker } from '@/components/inspector/DateInspectorPicker';
 import { MetricsBar } from '@/components/inspector/MetricsBar';
+import { CashWaterfallChart } from '@/components/inspector/CashWaterfallChart';
 import { TransactionRegister } from '@/components/inspector/TransactionRegister';
 
 interface DailyInspectorPageProps {
@@ -110,7 +111,13 @@ export const DailyInspectorPage: React.FC<DailyInspectorPageProps> = ({
           <span>Error loading daily roll-forward: {(error as Error)?.message || 'Account not found'}</span>
         </div>
       ) : ledgerResponse ? (
-        <MetricsBar summary={ledgerResponse.data.summary} />
+        <>
+          <MetricsBar summary={ledgerResponse.data.summary} />
+          <CashWaterfallChart
+            summary={ledgerResponse.data.summary}
+            transactions={ledgerResponse.data.transactions}
+          />
+        </>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 animate-pulse">
           <div className="h-28 bg-[#121b2d] rounded-2xl" />
