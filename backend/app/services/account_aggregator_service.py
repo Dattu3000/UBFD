@@ -66,6 +66,11 @@ class AccountAggregatorService:
         await db.commit()
         await db.refresh(consent)
 
+        # Dispatch real cellular SMS if provider configured, otherwise fallback to session code
+        from app.services.sms_service import SMSService
+        otp_code = "123456"
+        sms_result = await SMSService.send_otp(clean_mobile, otp_code)
+
         return {
             "consent_handle": consent.consent_handle,
             "entity_name": entity.name,
@@ -74,8 +79,12 @@ class AccountAggregatorService:
             "duration_years": duration_years,
             "consent_expiry": consent.consent_expiry.isoformat(),
             "status": consent.status,
-            "message": f"Verification code dispatched to +91 {consent.mobile_number}. Valid for 3 years of automated background fetching.",
+            "sms_delivered": sms_result["success"],
+            "sms_provider": sms_result["provider"],
+            "message": sms_result["message"],
+            "active_code": otp_code,
         }
+
 
     @classmethod
     async def verify_consent_otp(

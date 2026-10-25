@@ -35,7 +35,14 @@ class Settings(BaseSettings):
     AA_CLIENT_SECRET: str = ""
     AA_BASE_URL: str = "https://fiu-sandbox.setu.co"
 
+    # SMS Gateway for Live Cellular OTP Delivery
+    FAST2SMS_API_KEY: str = ""
+    TWILIO_ACCOUNT_SID: str = ""
+    TWILIO_AUTH_TOKEN: str = ""
+    TWILIO_PHONE_NUMBER: str = ""
+
     model_config = SettingsConfigDict(
+
         case_sensitive=True,
         env_file=".env",
         extra="ignore"

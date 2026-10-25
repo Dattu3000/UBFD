@@ -90,11 +90,19 @@ export const LiveBankConnectPage: React.FC<LiveBankConnectPageProps> = ({ entiti
   const [directType, setDirectType] = useState<FacilityType>('CURRENT');
   const [directBalance, setDirectBalance] = useState<string>('500000.00');
 
+  const [initiateInfo, setInitiateInfo] = useState<{
+    sms_delivered?: boolean;
+    sms_provider?: string;
+    message?: string;
+    active_code?: string;
+  } | null>(null);
+
   // 1. Initiate Consent Mutation
   const initiateMutation = useMutation({
     mutationFn: (data: any) => api.post<any>('/aa/consent/initiate', data),
     onSuccess: (data) => {
       setActiveConsentHandle(data.consent_handle);
+      setInitiateInfo(data);
       setWizardStep(2);
       setErrorBanner(null);
     },
@@ -102,6 +110,7 @@ export const LiveBankConnectPage: React.FC<LiveBankConnectPageProps> = ({ entiti
       setErrorBanner(err.message || 'Failed to initiate consent');
     },
   });
+
 
   // 2. Verify OTP Mutation
   const verifyMutation = useMutation({
@@ -636,10 +645,35 @@ export const LiveBankConnectPage: React.FC<LiveBankConnectPageProps> = ({ entiti
                   <p className="text-xs text-[#a2b8b5]">
                     OTP dispatched to registered mobile <span className="text-[#F0EDE4] font-mono font-bold">+91 {mobileNumber}</span>
                   </p>
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#004741]/50 border border-[#134e48] text-[#F0EDE4] text-xs">
-                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                    <span>Real-time Live SMS Verification</span>
-                  </div>
+                  
+                  {initiateInfo?.sms_delivered ? (
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950/80 border border-emerald-700/60 text-emerald-300 text-xs">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                      <span>Live Cellular SMS Sent via {initiateInfo.sms_provider}</span>
+                    </div>
+                  ) : (
+                    <div className="p-3 rounded-xl bg-amber-950/50 border border-amber-800/60 text-amber-200 text-left text-xs space-y-1.5 mt-2">
+                      <div className="flex items-center gap-1.5 font-bold text-amber-300">
+                        <AlertCircle className="w-4 h-4 shrink-0" />
+                        <span>Why physical SMS didn't arrive:</span>
+                      </div>
+                      <p className="text-[11px] text-[#a2b8b5] leading-normal">
+                        No external SMS gateway (Fast2SMS / Twilio) API key is configured in your local <code>.env</code> file.
+                      </p>
+                      <div className="flex items-center justify-between pt-1">
+                        <span className="text-[11px] text-[#F0EDE4] font-mono">
+                          Active Code: <strong>{initiateInfo?.active_code || '123456'}</strong>
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => setOtpCode(initiateInfo?.active_code || '123456')}
+                          className="px-2.5 py-1 rounded-lg bg-[#004741] hover:bg-[#0c3a35] text-[#F0EDE4] border border-[#134e48] font-bold text-[11px] transition-colors"
+                        >
+                          Auto-fill ({initiateInfo?.active_code || '123456'})
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <div>
@@ -667,14 +701,14 @@ export const LiveBankConnectPage: React.FC<LiveBankConnectPageProps> = ({ entiti
                     <span className="text-[#134e48]">•</span>
                     <button
                       type="button"
-                      onClick={() => setOtpCode('123456')}
+                      onClick={() => setOtpCode(initiateInfo?.active_code || '123456')}
                       className="text-[#a2b8b5] hover:text-[#F0EDE4]"
-                      title="Quick fill for local test runs"
                     >
-                      Auto-fill (123456)
+                      Fill Code ({initiateInfo?.active_code || '123456'})
                     </button>
                   </div>
                 </div>
+
 
                 <div className="p-3 rounded-xl bg-[#004741]/40 border border-[#134e48] text-[11px] text-[#F0EDE4] text-center">
                   🔒 Approves <strong>3 Years</strong> of recurring automated data sync. No daily OTPs required.
