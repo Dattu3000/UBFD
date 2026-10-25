@@ -1,0 +1,14 @@
+import pytest_asyncio
+from app.core.database import init_db, async_session_factory
+from app.core.seeder import seed_demo_data_if_empty
+
+
+@pytest_asyncio.fixture(scope="session", autouse=True)
+async def setup_test_database():
+    """
+    Ensure database tables and initial demo seed are loaded before test suite executes.
+    """
+    await init_db()
+    async with async_session_factory() as session:
+        await seed_demo_data_if_empty(session)
+    yield
