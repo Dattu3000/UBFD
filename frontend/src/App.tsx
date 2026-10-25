@@ -4,6 +4,7 @@ import { Sidebar, NavigationTab } from '@/components/layout/Sidebar';
 import { Header } from '@/components/layout/Header';
 import { GroupOverviewPage } from '@/pages/GroupOverviewPage';
 import { DailyInspectorPage } from '@/pages/DailyInspectorPage';
+import { IntercompanyNettingPage } from '@/pages/IntercompanyNettingPage';
 import { api } from '@/lib/api-client';
 import { LegalEntity, GroupLiquiditySummary } from '@/types/finance';
 
@@ -98,17 +99,7 @@ export const AppContent: React.FC = () => {
           )}
 
           {currentTab === 'intercompany' && (
-            <div className="p-8 max-w-7xl mx-auto space-y-6">
-              <div className="p-8 rounded-2xl bg-[#0f172a] border border-[#1e2a42] text-center space-y-3">
-                <div className="inline-flex p-3 rounded-xl bg-contra-DEFAULT/20 text-contra-light border border-contra-DEFAULT/30">
-                  <span className="font-mono text-sm">Phase 3 Target: Inter-Company Netting Engine</span>
-                </div>
-                <h3 className="text-xl font-bold text-slate-100">Inter-Company Contra Elimination</h3>
-                <p className="text-sm text-slate-400 max-w-lg mx-auto">
-                  Automated ±48h window matching and MCA Rule 3 immutable audit logging scheduled for Phase 3 delivery.
-                </p>
-              </div>
-            </div>
+            <IntercompanyNettingPage />
           )}
 
           {currentTab === 'ingestion' && (
