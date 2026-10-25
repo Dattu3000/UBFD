@@ -5,6 +5,7 @@ import { Header } from '@/components/layout/Header';
 import { GroupOverviewPage } from '@/pages/GroupOverviewPage';
 import { DailyInspectorPage } from '@/pages/DailyInspectorPage';
 import { IntercompanyNettingPage } from '@/pages/IntercompanyNettingPage';
+import { StatementIngestionPage } from '@/pages/StatementIngestionPage';
 import { api } from '@/lib/api-client';
 import { LegalEntity, GroupLiquiditySummary } from '@/types/finance';
 
@@ -103,17 +104,7 @@ export const AppContent: React.FC = () => {
           )}
 
           {currentTab === 'ingestion' && (
-            <div className="p-8 max-w-7xl mx-auto space-y-6">
-              <div className="p-8 rounded-2xl bg-[#0f172a] border border-[#1e2a42] text-center space-y-3">
-                <div className="inline-flex p-3 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                  <span className="font-mono text-sm">Phase 4 Target: Bank Statement Ingestion Rail</span>
-                </div>
-                <h3 className="text-xl font-bold text-slate-100">Statement Ingestion & Table Extraction</h3>
-                <p className="text-sm text-slate-400 max-w-lg mx-auto">
-                  PDF & CSV parsers for SBI, ICICI, and HDFC statements scheduled for Phase 4 delivery.
-                </p>
-              </div>
-            </div>
+            <StatementIngestionPage accounts={summary?.accounts || []} />
           )}
         </main>
       </div>
