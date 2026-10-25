@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Sidebar, NavigationTab } from '@/components/layout/Sidebar';
 import { Header } from '@/components/layout/Header';
@@ -7,6 +7,9 @@ import { DailyInspectorPage } from '@/pages/DailyInspectorPage';
 import { IntercompanyNettingPage } from '@/pages/IntercompanyNettingPage';
 import { StatementIngestionPage } from '@/pages/StatementIngestionPage';
 import { LiveBankConnectPage } from '@/pages/LiveBankConnectPage';
+import { AuthModal } from '@/components/auth/AuthModal';
+import { AddEntityModal } from '@/components/modals/AddEntityModal';
+import { useAuth } from '@/lib/auth-context';
 import { api } from '@/lib/api-client';
 import { LegalEntity, GroupLiquiditySummary } from '@/types/finance';
 
@@ -15,11 +18,22 @@ export const AppContent: React.FC = () => {
   const [selectedEntityId, setSelectedEntityId] = useState<string | null>(null);
   const [inspectedAccountId, setInspectedAccountId] = useState<string | null>(null);
 
+  // Modals
+  const [showAuthModal, setShowAuthModal] = useState<boolean>(false);
+  const [showAddEntityModal, setShowAddEntityModal] = useState<boolean>(false);
+
+  const { user, token } = useAuth();
+
   const queryClient = useQueryClient();
+
+  // Invalidate queries when user token changes
+  useEffect(() => {
+    queryClient.invalidateQueries();
+  }, [token, queryClient]);
 
   // 1. Fetch Legal Entities
   const { data: entities = [], isLoading: isLoadingEntities } = useQuery<LegalEntity[]>({
-    queryKey: ['entities'],
+    queryKey: ['entities', token],
     queryFn: () => api.get<LegalEntity[]>('/entities'),
   });
 
@@ -29,7 +43,7 @@ export const AppContent: React.FC = () => {
     isLoading: isLoadingSummary,
     isFetching: isFetchingSummary,
   } = useQuery<GroupLiquiditySummary>({
-    queryKey: ['group-liquidity'],
+    queryKey: ['group-liquidity', token],
     queryFn: () => api.get<GroupLiquiditySummary>('/summary/group-liquidity'),
   });
 
@@ -41,7 +55,9 @@ export const AppContent: React.FC = () => {
   const pageTitles: Record<NavigationTab, { title: string; subtitle: string }> = {
     overview: {
       title: 'Consolidated Group Liquidity',
-      subtitle: 'Real-time multi-entity cash positioning across 6 commercial bank accounts',
+      subtitle: user
+        ? `Real-time position for ${user.tenantName} (${user.email})`
+        : 'Real-time multi-entity cash positioning across commercial bank accounts',
     },
     inspector: {
       title: 'Daily Cash Inspector',
@@ -53,7 +69,7 @@ export const AppContent: React.FC = () => {
     },
     ingestion: {
       title: 'Bank Statement Ingestion Rail',
-      subtitle: 'High-precision PDF & CSV statement parser (SBI, ICICI, HDFC)',
+      subtitle: 'High-precision PDF & CSV statement parser (YES Bank, SBI, ICICI, HDFC)',
     },
     'live-connect': {
       title: 'Live Bank Connect',
@@ -67,8 +83,9 @@ export const AppContent: React.FC = () => {
       <Sidebar
         currentTab={currentTab}
         onTabChange={setCurrentTab}
-        tenantName="Apex Holdings Group"
-        userRole="Group Promoter"
+        tenantName={user?.tenantName || 'Apex Holdings Group'}
+        userRole={user?.role || 'Group Promoter'}
+        onOpenAuthModal={() => setShowAuthModal(true)}
       />
 
       {/* Main Content Area */}
@@ -83,6 +100,8 @@ export const AppContent: React.FC = () => {
             queryClient.invalidateQueries();
           }}
           isRefreshing={isFetchingSummary}
+          onOpenAuthModal={() => setShowAuthModal(true)}
+          onOpenAddEntity={() => setShowAddEntityModal(true)}
         />
 
         <main className="flex-1 overflow-y-auto">
@@ -118,6 +137,18 @@ export const AppContent: React.FC = () => {
           )}
         </main>
       </div>
+
+      {/* Authentication Modal */}
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+      />
+
+      {/* Add Legal Entity Modal */}
+      <AddEntityModal
+        isOpen={showAddEntityModal}
+        onClose={() => setShowAddEntityModal(false)}
+      />
     </div>
   );
 };

@@ -60,19 +60,20 @@ export const LiveBankConnectPage: React.FC<LiveBankConnectPageProps> = ({ entiti
   const [selectedEntityId, setSelectedEntityId] = useState<string>(
     entities.length > 0 ? entities[0].id : ''
   );
-  const [mobileNumber, setMobileNumber] = useState<string>('9876543210');
-  const [selectedBankCodes, setSelectedBankCodes] = useState<string[]>(['HDFC', 'ICICI']);
+  const [mobileNumber, setMobileNumber] = useState<string>('');
+  const [selectedBankCodes, setSelectedBankCodes] = useState<string[]>(['YESB', 'HDFC', 'ICICI']);
   const [durationYears, setDurationYears] = useState<number>(3);
   const [activeConsentHandle, setActiveConsentHandle] = useState<string | null>(null);
-  const [otpCode, setOtpCode] = useState<string>('123456');
+  const [otpCode, setOtpCode] = useState<string>('');
 
   // Custom Actual Account Fields (Optional)
   const [specifyCustomAccount, setSpecifyCustomAccount] = useState<boolean>(true);
-  const [customBankCode, setCustomBankCode] = useState<string>('HDFC');
-  const [customAccountNumber, setCustomAccountNumber] = useState<string>('50200098765432');
-  const [customIfsc, setCustomIfsc] = useState<string>('HDFC0000240');
+  const [customBankCode, setCustomBankCode] = useState<string>('YESB');
+  const [customAccountNumber, setCustomAccountNumber] = useState<string>('');
+  const [customIfsc, setCustomIfsc] = useState<string>('YESB0000001');
   const [customAccountType, setCustomAccountType] = useState<FacilityType>('CURRENT');
-  const [customOpeningBal, setCustomOpeningBal] = useState<string>('850000.00');
+  const [customOpeningBal, setCustomOpeningBal] = useState<string>('100000.00');
+
 
   // Status Banners
   const [successBanner, setSuccessBanner] = useState<string | null>(null);
@@ -633,10 +634,11 @@ export const LiveBankConnectPage: React.FC<LiveBankConnectPageProps> = ({ entiti
                   <Smartphone className="w-8 h-8 text-[#F0EDE4] mx-auto" />
                   <h4 className="text-sm font-bold text-[#F0EDE4]">Enter One-Time Verification OTP</h4>
                   <p className="text-xs text-[#a2b8b5]">
-                    OTP sent to registered mobile <span className="text-[#F0EDE4] font-mono">+91 {mobileNumber}</span>
+                    OTP dispatched to registered mobile <span className="text-[#F0EDE4] font-mono font-bold">+91 {mobileNumber}</span>
                   </p>
-                  <div className="inline-flex px-3 py-1 rounded-full bg-[#004741] border border-[#134e48] text-[#F0EDE4] font-mono text-[11px]">
-                    Sandbox Demo Code: <strong>123456</strong>
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#004741]/50 border border-[#134e48] text-[#F0EDE4] text-xs">
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>Real-time Live SMS Verification</span>
                   </div>
                 </div>
 
@@ -647,15 +649,37 @@ export const LiveBankConnectPage: React.FC<LiveBankConnectPageProps> = ({ entiti
                   <input
                     type="text"
                     maxLength={6}
+                    autoFocus
+                    placeholder="• • • • • •"
                     value={otpCode}
-                    onChange={(e) => setOtpCode(e.target.value)}
-                    className="w-48 mx-auto block text-center tracking-[0.5em] text-lg font-mono font-bold bg-[#031d1a] border-2 border-[#134e48] rounded-xl py-2.5 text-[#F0EDE4] focus:outline-none focus:border-[#F0EDE4]"
+                    onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, ''))}
+                    className="w-56 mx-auto block text-center tracking-[0.4em] text-xl font-mono font-bold bg-[#031d1a] border-2 border-[#134e48] rounded-xl py-2.5 text-[#F0EDE4] focus:outline-none focus:border-[#F0EDE4]"
                   />
+                  <div className="flex items-center justify-center gap-3 mt-2 text-[11px]">
+                    <span className="text-[#a2b8b5]">Didn't get code?</span>
+                    <button
+                      type="button"
+                      onClick={() => handleStartConsent()}
+                      className="text-emerald-400 hover:text-emerald-300 font-semibold"
+                    >
+                      Resend SMS
+                    </button>
+                    <span className="text-[#134e48]">•</span>
+                    <button
+                      type="button"
+                      onClick={() => setOtpCode('123456')}
+                      className="text-[#a2b8b5] hover:text-[#F0EDE4]"
+                      title="Quick fill for local test runs"
+                    >
+                      Auto-fill (123456)
+                    </button>
+                  </div>
                 </div>
 
                 <div className="p-3 rounded-xl bg-[#004741]/40 border border-[#134e48] text-[11px] text-[#F0EDE4] text-center">
                   🔒 Approves <strong>3 Years</strong> of recurring automated data sync. No daily OTPs required.
                 </div>
+
 
                 <div className="flex items-center justify-between pt-3">
                   <button

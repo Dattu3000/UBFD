@@ -85,10 +85,26 @@ async def get_current_user(
     else:
         tenant_name = result.name
 
+    user_email = payload.get("email") if token else "promoter@apexholdings.in"
+    user_fullname = payload.get("email", "").split("@")[0].title() if token else "Rajesh Promoter"
+    try:
+        user_uuid = uuid.UUID(user_id)
+        from app.models.user import User
+        u_obj = await db.scalar(select(User).where(User.id == user_uuid))
+        if u_obj:
+            user_email = u_obj.email
+            user_fullname = u_obj.full_name
+            role = u_obj.role
+    except Exception:
+        pass
+
     return UserContext(
         user_id=user_id,
-        username=user_id,
+        username=user_email or user_id,
+        email=user_email,
+        full_name=user_fullname,
         tenant_id=tenant_id,
         tenant_name=tenant_name,
         role=role,
     )
+

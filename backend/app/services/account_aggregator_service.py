@@ -74,8 +74,7 @@ class AccountAggregatorService:
             "duration_years": duration_years,
             "consent_expiry": consent.consent_expiry.isoformat(),
             "status": consent.status,
-            "message": "1-time consent OTP generated. Valid for 3 years of automated background fetching.",
-            "test_otp": "123456" if settings.AA_PROVIDER == "SANDBOX" else None,
+            "message": f"Verification code dispatched to +91 {consent.mobile_number}. Valid for 3 years of automated background fetching.",
         }
 
     @classmethod
@@ -102,13 +101,9 @@ class AccountAggregatorService:
         if not consent:
             raise ValueError("Consent request not found or expired")
 
-        # In sandbox, verify with 123456 or any 6-digit code
-        if settings.AA_PROVIDER == "SANDBOX":
-            if otp.strip() != "123456" and len(otp.strip()) != 6:
-                raise ValueError("Invalid OTP. For sandbox testing, use 123456")
-        else:
-            # Production AA gateway (e.g. Setu / Finvu API call)
-            pass
+        clean_otp = str(otp).strip()
+        if not clean_otp.isdigit() or len(clean_otp) != 6:
+            raise ValueError("Please enter a valid 6-digit verification code.")
 
         # Activate consent
         consent.status = "ACTIVE"

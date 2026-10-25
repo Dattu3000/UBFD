@@ -32,8 +32,9 @@ class DeclaredAccountInput(BaseModel):
 
 class VerifyConsentOtpRequest(BaseModel):
     consent_handle: str
-    otp: str = Field(..., description="1-time OTP (use 123456 in sandbox)")
+    otp: str = Field(..., description="6-digit verification code")
     declared_accounts: Optional[List[DeclaredAccountInput]] = None
+
 
 
 class AddDirectAccountRequest(BaseModel):

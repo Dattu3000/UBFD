@@ -67,3 +67,40 @@ async def test_group_liquidity_summary():
         assert float(data["total_cleared_cash"]) > 0
         assert data["accounts_count"] >= 6
         assert data["entities_count"] >= 3
+
+
+@pytest.mark.asyncio
+async def test_personal_email_registration_and_login():
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
+        reg_payload = {
+            "email": "dattu.finance@gmail.com",
+            "password": "SecurePassword123!",
+            "full_name": "Dattu Promoter",
+            "organization_name": "Dattu Global Tech Pvt Ltd",
+            "mobile_number": "7989273914",
+        }
+        res_reg = await ac.post(f"{settings.API_V1_STR}/auth/register", json=reg_payload)
+        assert res_reg.status_code == 201
+        reg_data = res_reg.json()
+        assert "access_token" in reg_data
+        assert reg_data["email"] == "dattu.finance@gmail.com"
+        assert reg_data["tenant_name"] == "Dattu Global Tech Pvt Ltd"
+
+        token = reg_data["access_token"]
+        headers = {"Authorization": f"Bearer {token}"}
+
+        # Verify /me endpoint
+        res_me = await ac.get(f"{settings.API_V1_STR}/auth/me", headers=headers)
+        assert res_me.status_code == 200
+        me_data = res_me.json()
+        assert me_data["email"] == "dattu.finance@gmail.com"
+
+        # Verify login endpoint with personal email
+        login_payload = {
+            "email": "dattu.finance@gmail.com",
+            "password": "SecurePassword123!",
+        }
+        res_login = await ac.post(f"{settings.API_V1_STR}/auth/login", json=login_payload)
+        assert res_login.status_code == 200
+        assert "access_token" in res_login.json()
+
