@@ -3,6 +3,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Sidebar, NavigationTab } from '@/components/layout/Sidebar';
 import { Header } from '@/components/layout/Header';
 import { GroupOverviewPage } from '@/pages/GroupOverviewPage';
+import { DailyInspectorPage } from '@/pages/DailyInspectorPage';
 import { api } from '@/lib/api-client';
 import { LegalEntity, GroupLiquiditySummary } from '@/types/finance';
 
@@ -89,18 +90,11 @@ export const AppContent: React.FC = () => {
           )}
 
           {currentTab === 'inspector' && (
-            <div className="p-8 max-w-7xl mx-auto space-y-6">
-              <div className="p-8 rounded-2xl bg-[#0f172a] border border-[#1e2a42] text-center space-y-3">
-                <div className="inline-flex p-3 rounded-xl bg-brand-500/20 text-brand-300 border border-brand-500/30">
-                  <span className="font-mono text-sm">Phase 2 Target: Daily Cash Inspector Engine</span>
-                </div>
-                <h3 className="text-xl font-bold text-slate-100">Daily Cash Inspector Ready for Hookup</h3>
-                <p className="text-sm text-slate-400 max-w-lg mx-auto">
-                  Active Inspected Account ID: <code className="font-mono text-brand-300">{inspectedAccountId || 'f81d4fae-7dec-11d0-a765-00a0c91e6bf6'}</code>.
-                  Phase 2 will implement the dynamic rollback algorithm and sub-150ms metrics tiles.
-                </p>
-              </div>
-            </div>
+            <DailyInspectorPage
+              initialAccountId={inspectedAccountId}
+              accounts={summary?.accounts || []}
+              onBackToOverview={() => setCurrentTab('overview')}
+            />
           )}
 
           {currentTab === 'intercompany' && (
