@@ -6,6 +6,7 @@ import { GroupOverviewPage } from '@/pages/GroupOverviewPage';
 import { DailyInspectorPage } from '@/pages/DailyInspectorPage';
 import { IntercompanyNettingPage } from '@/pages/IntercompanyNettingPage';
 import { StatementIngestionPage } from '@/pages/StatementIngestionPage';
+import { LiveBankConnectPage } from '@/pages/LiveBankConnectPage';
 import { api } from '@/lib/api-client';
 import { LegalEntity, GroupLiquiditySummary } from '@/types/finance';
 
@@ -54,6 +55,10 @@ export const AppContent: React.FC = () => {
       title: 'Bank Statement Ingestion Rail',
       subtitle: 'High-precision PDF & CSV statement parser (SBI, ICICI, HDFC)',
     },
+    'live-connect': {
+      title: 'Live Bank Connect',
+      subtitle: 'RBI Account Aggregator 3-Year Background Consent (0 Daily OTPs)',
+    },
   };
 
   return (
@@ -87,6 +92,7 @@ export const AppContent: React.FC = () => {
               entities={entities}
               selectedEntityId={selectedEntityId}
               onInspectAccount={handleInspectAccount}
+              onNavigateToLiveConnect={() => setCurrentTab('live-connect')}
               isLoading={isLoadingEntities || isLoadingSummary}
             />
           )}
@@ -105,6 +111,10 @@ export const AppContent: React.FC = () => {
 
           {currentTab === 'ingestion' && (
             <StatementIngestionPage accounts={summary?.accounts || []} />
+          )}
+
+          {currentTab === 'live-connect' && (
+            <LiveBankConnectPage entities={entities} />
           )}
         </main>
       </div>

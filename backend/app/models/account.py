@@ -8,6 +8,7 @@ from sqlalchemy import (
     Date,
     Numeric,
     ForeignKey,
+    Boolean,
     Index,
     UniqueConstraint,
 )
@@ -18,6 +19,7 @@ if TYPE_CHECKING:
     from app.models.tenant import Tenant
     from app.models.entity import Entity
     from app.models.transaction import Transaction
+    from app.models.consent import BankConsent
 
 
 class BankAccount(Base):
@@ -57,6 +59,12 @@ class BankAccount(Base):
         nullable=False
     )
     custom_tag: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
+    is_live: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
+    consent_id: Mapped[Optional[uuid.UUID]] = mapped_column(
+        ForeignKey("bank_consents.id", ondelete="SET NULL"),
+        nullable=True,
+        index=True
+    )
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         default=lambda: datetime.now(timezone.utc),
@@ -66,6 +74,7 @@ class BankAccount(Base):
     # Relationships
     tenant: Mapped["Tenant"] = relationship("Tenant", back_populates="accounts")
     entity: Mapped["Entity"] = relationship("Entity", back_populates="accounts")
+    consent: Mapped[Optional["BankConsent"]] = relationship("BankConsent", back_populates="accounts")
     transactions: Mapped[List["Transaction"]] = relationship(
         "Transaction", back_populates="account", cascade="all, delete-orphan"
     )

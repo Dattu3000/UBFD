@@ -48,7 +48,7 @@ async def test_upload_statement_api():
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
         account_id = "f81d4fae-7dec-11d0-a765-00a0c91e6bf6"
         sample_csv = b"""Date,Narration,Chq/Ref No,Value Dt,Withdrawal Amt,Deposit Amt,Closing Balance
-25/10/2026,NEFT CR-CMS771122-CLIENT PAYMENT-HDF0000240,CMS771122,25/10/2026,,88000.00,2267920.50
+26/10/2026,NEFT CR-CMS771122-CLIENT PAYMENT-HDF0000240,CMS771122,26/10/2026,,88000.00,2267920.50
 """
         files = {
             "file": ("statement_oct2026.csv", sample_csv, "text/csv"),

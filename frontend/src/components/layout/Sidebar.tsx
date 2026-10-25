@@ -5,9 +5,10 @@ import {
   ArrowLeftRight,
   FileSpreadsheet,
   ShieldCheck,
+  Landmark,
 } from 'lucide-react';
 
-export type NavigationTab = 'overview' | 'inspector' | 'intercompany' | 'ingestion';
+export type NavigationTab = 'overview' | 'inspector' | 'intercompany' | 'ingestion' | 'live-connect';
 
 interface SidebarProps {
   currentTab: NavigationTab;
@@ -46,6 +47,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
       label: 'Statement Ingestion',
       subtitle: 'PDF & Bank Feeds Ingestion',
       icon: FileSpreadsheet,
+    },
+    {
+      id: 'live-connect' as NavigationTab,
+      label: 'Live Bank Connect',
+      subtitle: 'RBI Account Aggregator Rail',
+      icon: Landmark,
     },
   ];
 

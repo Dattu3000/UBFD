@@ -68,3 +68,12 @@ async def init_db() -> None:
     """
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+        # SQLite lightweight column migration for live account & consent additions
+        if "sqlite" in settings.DATABASE_URL:
+            res = await conn.execute(text("PRAGMA table_info(bank_accounts)"))
+            cols = [row[1] for row in res.fetchall()]
+            if cols:
+                if "is_live" not in cols:
+                    await conn.execute(text("ALTER TABLE bank_accounts ADD COLUMN is_live BOOLEAN NOT NULL DEFAULT 0"))
+                if "consent_id" not in cols:
+                    await conn.execute(text("ALTER TABLE bank_accounts ADD COLUMN consent_id VARCHAR(36)"))

@@ -27,6 +27,25 @@ export interface BankAccount {
   custom_tag?: string;
   opening_balance: number;
   current_cleared_balance: number;
+  is_live?: boolean;
+  consent_id?: string;
+}
+
+export interface BankConsent {
+  id: string;
+  consent_handle: string;
+  consent_id?: string;
+  entity_name: string;
+  mobile_number: string;
+  bank_codes: string[];
+  status: 'PENDING_OTP' | 'ACTIVE' | 'EXPIRED' | 'REVOKED';
+  consent_duration_years: number;
+  consent_start: string;
+  consent_expiry: string;
+  valid_until: string;
+  last_sync_at?: string;
+  linked_accounts_count: number;
+  accounts: BankAccount[];
 }
 
 export interface DailyLedgerSummary {

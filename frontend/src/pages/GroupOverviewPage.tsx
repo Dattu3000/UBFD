@@ -16,6 +16,7 @@ interface GroupOverviewPageProps {
   entities: LegalEntity[];
   selectedEntityId: string | null;
   onInspectAccount: (accountId: string) => void;
+  onNavigateToLiveConnect?: () => void;
   isLoading?: boolean;
 }
 
@@ -24,6 +25,7 @@ export const GroupOverviewPage: React.FC<GroupOverviewPageProps> = ({
   entities,
   selectedEntityId,
   onInspectAccount,
+  onNavigateToLiveConnect,
   isLoading = false,
 }) => {
   if (isLoading || !summary) {
@@ -165,9 +167,19 @@ export const GroupOverviewPage: React.FC<GroupOverviewPageProps> = ({
               Live position aggregated from cleared bank statements feeds
             </p>
           </div>
-          <span className="text-xs font-mono text-slate-400 bg-[#121c2e] px-3 py-1 rounded-lg border border-[#1f2d42]">
-            {displayedAccounts.length} Accounts
-          </span>
+          <div className="flex items-center gap-3">
+            {onNavigateToLiveConnect && (
+              <button
+                onClick={onNavigateToLiveConnect}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-brand-600/20 hover:bg-brand-500/30 text-brand-300 border border-brand-500/40 text-xs font-semibold transition-all shadow-sm"
+              >
+                <span>+ Link Live Account (AA)</span>
+              </button>
+            )}
+            <span className="text-xs font-mono text-slate-400 bg-[#121c2e] px-3 py-1 rounded-lg border border-[#1f2d42]">
+              {displayedAccounts.length} Accounts
+            </span>
+          </div>
         </div>
 
         <div className="bg-[#0e1626] border border-[#1a253a] rounded-2xl overflow-hidden shadow-xl">

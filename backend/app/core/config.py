@@ -29,6 +29,12 @@ class Settings(BaseSettings):
 
     DEMO_MODE: bool = True
 
+    # Account Aggregator (RBI AA / ReBIT Architecture - Setu / Finvu / OneMoney)
+    AA_PROVIDER: str = "SANDBOX"  # or "SETU", "FINVU", "ONEMONEY"
+    AA_CLIENT_ID: str = ""
+    AA_CLIENT_SECRET: str = ""
+    AA_BASE_URL: str = "https://fiu-sandbox.setu.co"
+
     model_config = SettingsConfigDict(
         case_sensitive=True,
         env_file=".env",
