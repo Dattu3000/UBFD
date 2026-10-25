@@ -3,7 +3,7 @@ import pytest
 from httpx import AsyncClient, ASGITransport
 from app.main import app
 from app.core.config import settings
-from app.services.pdf_parser import HDFCParser, ICICIParser, SBIParser
+from app.services.pdf_parser import HDFCParser, ICICIParser, SBIParser, YESBankParser, get_parser_for_bank
 
 
 def test_hdfc_parser():
@@ -41,6 +41,21 @@ def test_sbi_parser():
     assert len(items) == 1
     assert items[0].credit_amount == Decimal("4250.00")
     assert items[0].running_balance == Decimal("819250.00")
+
+
+def test_yes_bank_parser():
+    sample_yes_csv = """Txn Date,Value Date,Description,Cheque/Reference No,Debit,Credit,Running Balance
+25/10/2026,25/10/2026,NEFT CR-ESCROW992-PAYMENTS-YESB0000001,UTR99881100,0.00,480000.00,1480000.00
+25/10/2026,25/10/2026,RTGS DR-FLEET-EXPENSE-IDFB0000001,UTR99881101,65000.00,0.00,1415000.00
+"""
+    parser = get_parser_for_bank("YESB")
+    assert isinstance(parser, YESBankParser)
+    items = parser.parse_csv(sample_yes_csv)
+    assert len(items) == 2
+    assert items[0].credit_amount == Decimal("480000.00")
+    assert items[0].running_balance == Decimal("1480000.00")
+    assert items[1].debit_amount == Decimal("65000.00")
+
 
 
 @pytest.mark.asyncio

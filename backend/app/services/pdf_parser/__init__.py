@@ -2,6 +2,7 @@ from app.services.pdf_parser.base_parser import BaseStatementParser, ParsedLineI
 from app.services.pdf_parser.hdfc_parser import HDFCParser
 from app.services.pdf_parser.icici_parser import ICICIParser
 from app.services.pdf_parser.sbi_parser import SBIParser
+from app.services.pdf_parser.yes_parser import YESBankParser
 
 
 def get_parser_for_bank(bank_code: str) -> BaseStatementParser:
@@ -12,7 +13,9 @@ def get_parser_for_bank(bank_code: str) -> BaseStatementParser:
         return ICICIParser()
     elif "SBI" in code:
         return SBIParser()
-    # Default to HDFC parser as standard generic layout
+    elif "YES" in code:
+        return YESBankParser()
+    # Default to generic / HDFC parser for other commercial banks
     return HDFCParser()
 
 
@@ -22,5 +25,7 @@ __all__ = [
     "HDFCParser",
     "ICICIParser",
     "SBIParser",
+    "YESBankParser",
     "get_parser_for_bank",
 ]
+

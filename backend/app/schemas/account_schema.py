@@ -3,7 +3,7 @@ from decimal import Decimal
 from typing import List, Optional, Literal
 from pydantic import BaseModel, ConfigDict, Field
 
-BankCodeType = Literal["SBI", "ICICI", "HDFC", "AXIS", "KOTAK", "BOB", "CUSTOM"]
+BankCodeType = str
 FacilityType = Literal["CURRENT", "SAVINGS", "OVERDRAFT", "CASH_CREDIT"]
 LegalEntityType = Literal["PVT_LTD", "LLP", "PROPRIETORSHIP", "PARTNERSHIP"]
 

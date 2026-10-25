@@ -21,13 +21,25 @@ interface LiveBankConnectPageProps {
   entities: LegalEntity[];
 }
 
-const INDIAN_BANKS: { code: BankCode; name: string; color: string }[] = [
-  { code: 'HDFC', name: 'HDFC Bank', color: 'from-blue-600 to-blue-800' },
-  { code: 'ICICI', name: 'ICICI Bank', color: 'from-orange-600 to-orange-800' },
-  { code: 'SBI', name: 'State Bank of India', color: 'from-sky-600 to-sky-800' },
-  { code: 'AXIS', name: 'Axis Bank', color: 'from-rose-600 to-rose-800' },
-  { code: 'KOTAK', name: 'Kotak Mahindra Bank', color: 'from-red-600 to-red-800' },
-  { code: 'BOB', name: 'Bank of Baroda', color: 'from-amber-600 to-amber-800' },
+const INDIAN_BANKS: { code: BankCode; name: string; color: string; defaultIfsc: string }[] = [
+  { code: 'HDFC', name: 'HDFC Bank', color: 'from-blue-600 to-blue-800', defaultIfsc: 'HDFC0000240' },
+  { code: 'ICICI', name: 'ICICI Bank', color: 'from-orange-600 to-orange-800', defaultIfsc: 'ICIC0000102' },
+  { code: 'SBI', name: 'State Bank of India', color: 'from-sky-600 to-sky-800', defaultIfsc: 'SBIN0000301' },
+  { code: 'YESB', name: 'YES Bank', color: 'from-blue-700 to-red-600', defaultIfsc: 'YESB0000001' },
+  { code: 'AXIS', name: 'Axis Bank', color: 'from-rose-600 to-rose-800', defaultIfsc: 'UTIB0000004' },
+  { code: 'KOTAK', name: 'Kotak Mahindra Bank', color: 'from-red-600 to-red-800', defaultIfsc: 'KKBK0000958' },
+  { code: 'INDUSIND', name: 'IndusInd Bank', color: 'from-red-800 to-amber-700', defaultIfsc: 'INDB0000001' },
+  { code: 'IDFC', name: 'IDFC FIRST Bank', color: 'from-rose-700 to-rose-900', defaultIfsc: 'IDFB0000001' },
+  { code: 'BOB', name: 'Bank of Baroda', color: 'from-amber-600 to-amber-800', defaultIfsc: 'BARB0000001' },
+  { code: 'PNB', name: 'Punjab National Bank', color: 'from-yellow-700 to-amber-600', defaultIfsc: 'PUNB0000001' },
+  { code: 'CANARA', name: 'Canara Bank', color: 'from-blue-600 to-yellow-500', defaultIfsc: 'CNRB0000001' },
+  { code: 'UNION', name: 'Union Bank of India', color: 'from-red-600 to-blue-700', defaultIfsc: 'UBIN0000001' },
+  { code: 'FEDERAL', name: 'Federal Bank', color: 'from-blue-800 to-amber-500', defaultIfsc: 'FDRL0000001' },
+  { code: 'RBL', name: 'RBL Bank', color: 'from-blue-700 to-sky-500', defaultIfsc: 'RATN0000001' },
+  { code: 'BOI', name: 'Bank of India', color: 'from-orange-600 to-sky-700', defaultIfsc: 'BKID0000001' },
+  { code: 'CBI', name: 'Central Bank of India', color: 'from-blue-700 to-red-600', defaultIfsc: 'CBIN0000001' },
+  { code: 'SCB', name: 'Standard Chartered', color: 'from-emerald-700 to-blue-600', defaultIfsc: 'SCBL0036001' },
+  { code: 'HSBC', name: 'HSBC Bank', color: 'from-red-600 to-slate-800', defaultIfsc: 'HSBC0400002' },
 ];
 
 export const LiveBankConnectPage: React.FC<LiveBankConnectPageProps> = ({ entities }) => {
@@ -455,9 +467,9 @@ export const LiveBankConnectPage: React.FC<LiveBankConnectPageProps> = ({ entiti
                 {/* Bank Selection */}
                 <div>
                   <label className="block text-xs font-semibold text-[#a2b8b5] uppercase tracking-wider mb-1.5">
-                    Select Commercial Banks to Authorize:
+                    Select Commercial Banks to Authorize ({INDIAN_BANKS.length} Integrated):
                   </label>
-                  <div className="grid grid-cols-3 gap-2">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-52 overflow-y-auto pr-1">
                     {INDIAN_BANKS.map((b) => {
                       const isSelected = selectedBankCodes.includes(b.code);
                       return (
@@ -529,12 +541,16 @@ export const LiveBankConnectPage: React.FC<LiveBankConnectPageProps> = ({ entiti
                         <label className="text-[10px] text-[#a2b8b5] font-semibold block mb-1">Bank</label>
                         <select
                           value={customBankCode}
-                          onChange={(e) => setCustomBankCode(e.target.value)}
+                          onChange={(e) => {
+                            setCustomBankCode(e.target.value);
+                            const b = INDIAN_BANKS.find((x) => x.code === e.target.value);
+                            if (b) setCustomIfsc(b.defaultIfsc);
+                          }}
                           className="w-full bg-[#072b27] border border-[#134e48] rounded-lg px-2.5 py-1.5 text-xs text-[#F0EDE4]"
                         >
                           {INDIAN_BANKS.map((b) => (
-                            <option key={b.code} value={b.code}>
-                              {b.name}
+                            <option key={b.code} value={b.code} className="bg-[#072b27] text-[#F0EDE4]">
+                              {b.name} ({b.code})
                             </option>
                           ))}
                         </select>
@@ -707,13 +723,16 @@ export const LiveBankConnectPage: React.FC<LiveBankConnectPageProps> = ({ entiti
                     onChange={(e) => {
                       setDirectBankCode(e.target.value);
                       const b = INDIAN_BANKS.find((x) => x.code === e.target.value);
-                      if (b) setDirectBankName(b.name);
+                      if (b) {
+                        setDirectBankName(b.name);
+                        setDirectIfsc(b.defaultIfsc);
+                      }
                     }}
                     className="w-full bg-[#031d1a] border border-[#134e48] rounded-xl px-3 py-2 text-xs text-[#F0EDE4]"
                   >
                     {INDIAN_BANKS.map((b) => (
                       <option key={b.code} value={b.code} className="bg-[#072b27] text-[#F0EDE4]">
-                        {b.name}
+                        {b.name} ({b.code})
                       </option>
                     ))}
                   </select>

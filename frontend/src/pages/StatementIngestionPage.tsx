@@ -72,7 +72,7 @@ export const StatementIngestionPage: React.FC<StatementIngestionPageProps> = ({
     }
   };
 
-  const handleLoadSampleStatement = (bank: 'HDFC' | 'SBI' | 'ICICI') => {
+  const handleLoadSampleStatement = (bank: 'HDFC' | 'SBI' | 'ICICI' | 'YESB') => {
     let content = '';
     let filename = '';
 
@@ -88,6 +88,12 @@ export const StatementIngestionPage: React.FC<StatementIngestionPageProps> = ({
       content = `Txn Date,Value Date,Description,Ref No./Cheque No.,Debit,Credit,Balance
 26/10/2026,26/10/2026,GST PAYMENT CHALLAN OCT26,SBIN009944,28500.00,0.00,786500.00
 26/10/2026,26/10/2026,INTEREST CREDIT H1,SBIN009945,0.00,3200.00,789700.00
+`;
+    } else if (bank === 'YESB') {
+      filename = 'yes_bank_commercial_oct2026.csv';
+      content = `Date,Narration,Chq/Ref No,Value Dt,Withdrawal Amt,Deposit Amt,Closing Balance
+26/10/2026,NEFT CR-CMS776655-CLIENT ESCROW SETTLEMENT,CMS776655,26/10/2026,,210000.00,1850000.00
+26/10/2026,RTGS DR-VENDOR FLEET LOGISTICS,YESB991122,26/10/2026,62000.00,,1788000.00
 `;
     } else {
       filename = 'icici_collections_oct2026.csv';
@@ -258,6 +264,19 @@ export const StatementIngestionPage: React.FC<StatementIngestionPageProps> = ({
               <div>
                 <span className="text-xs font-bold text-sky-300">State Bank of India (SBI)</span>
                 <p className="text-[11px] text-[#a2b8b5]">GST statutory challan + interest credits</p>
+              </div>
+              <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-[#004741] text-[#F0EDE4] border border-[#134e48]">
+                Load
+              </span>
+            </button>
+
+            <button
+              onClick={() => handleLoadSampleStatement('YESB')}
+              className="w-full p-3 rounded-xl bg-[#031d1a] hover:bg-[#0c3a35] border border-[#134e48] text-left transition-colors flex items-center justify-between"
+            >
+              <div>
+                <span className="text-xs font-bold text-cyan-300">YES Bank Commercial Feed</span>
+                <p className="text-[11px] text-[#a2b8b5]">Escrow settlement receipts + vendor fleet dispatch</p>
               </div>
               <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-[#004741] text-[#F0EDE4] border border-[#134e48]">
                 Load

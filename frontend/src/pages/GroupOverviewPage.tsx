@@ -201,9 +201,22 @@ export const GroupOverviewPage: React.FC<GroupOverviewPageProps> = ({
                     HDFC: 'bg-blue-950/70 text-blue-300 border-blue-800/60',
                     ICICI: 'bg-orange-950/70 text-orange-300 border-orange-800/60',
                     SBI: 'bg-sky-950/70 text-sky-300 border-sky-800/60',
+                    YESB: 'bg-blue-950/70 text-cyan-300 border-cyan-700/60',
+                    YES: 'bg-blue-950/70 text-cyan-300 border-cyan-700/60',
                     AXIS: 'bg-pink-950/70 text-pink-300 border-pink-800/60',
                     KOTAK: 'bg-red-950/70 text-red-300 border-red-800/60',
+                    INDUSIND: 'bg-purple-950/70 text-purple-300 border-purple-800/60',
+                    IDFC: 'bg-rose-950/70 text-rose-300 border-rose-800/60',
                     BOB: 'bg-amber-950/70 text-amber-300 border-amber-800/60',
+                    PNB: 'bg-yellow-950/70 text-yellow-300 border-yellow-800/60',
+                    CANARA: 'bg-teal-950/70 text-teal-300 border-teal-800/60',
+                    UNION: 'bg-indigo-950/70 text-indigo-300 border-indigo-800/60',
+                    FEDERAL: 'bg-blue-950/70 text-sky-300 border-blue-700/60',
+                    RBL: 'bg-cyan-950/70 text-cyan-300 border-cyan-700/60',
+                    BOI: 'bg-orange-950/70 text-amber-300 border-orange-800/60',
+                    CBI: 'bg-blue-950/70 text-blue-300 border-blue-800/60',
+                    SCB: 'bg-emerald-950/70 text-emerald-300 border-emerald-800/60',
+                    HSBC: 'bg-red-950/70 text-red-300 border-red-800/60',
                   };
                   const bankBadge = bankBadgeColors[acc.bank_code] || 'bg-[#031d1a] text-[#F0EDE4] border border-[#134e48]';
 

@@ -1,4 +1,25 @@
-export type BankCode = 'SBI' | 'ICICI' | 'HDFC' | 'AXIS' | 'KOTAK' | 'BOB' | 'CUSTOM';
+export type BankCode =
+  | 'SBI'
+  | 'ICICI'
+  | 'HDFC'
+  | 'AXIS'
+  | 'KOTAK'
+  | 'BOB'
+  | 'YESB'
+  | 'YES'
+  | 'INDUSIND'
+  | 'IDFC'
+  | 'PNB'
+  | 'CANARA'
+  | 'UNION'
+  | 'FEDERAL'
+  | 'RBL'
+  | 'BOI'
+  | 'CBI'
+  | 'SCB'
+  | 'HSBC'
+  | 'CUSTOM'
+  | string;
 export type FacilityType = 'CURRENT' | 'SAVINGS' | 'OVERDRAFT' | 'CASH_CREDIT';
 export type LegalEntityType = 'PVT_LTD' | 'LLP' | 'PROPRIETORSHIP' | 'PARTNERSHIP';
 
