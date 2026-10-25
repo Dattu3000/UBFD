@@ -36,20 +36,20 @@ updated: 2026-10-25T18:50:00+05:30
 ---
 
 ### Phase 2: Core Daily Cash Inspector Engine
-**Status:** ⬜ Not Started
+**Status:** ✅ Complete
 **Objective:** Implement the sub-150ms Daily Cash Inspector engine with dual-mode calculation (cached summary vs. dynamic ledger rollback), and construct the Daily Bank Inspector frontend page with 4-metric summary tiles and virtualized register.
 **Depends on:** Phase 1
 **Requirements:** REQ-03, REQ-06
 
 **Plans:**
-- [ ] Plan 2.1: `DailyCashInspectorService` & Dynamic Fallback Engine with Automated Tests (`01-daily-inspector-service.md`)
-- [ ] Plan 2.2: Daily Inspector API Route (`/daily-ledger`) with Filters & Aggregation (`02-daily-ledger-api.md`)
-- [ ] Plan 2.3: Frontend Date Inspector Picker, 4-Metric Tiles & Virtualized Transaction Register (`03-inspector-ui-and-register.md`)
+- [x] Plan 2.1: `DailyCashInspectorService` & Dynamic Fallback Engine with Automated Tests (`01-daily-inspector-service.md`)
+- [x] Plan 2.2: Daily Inspector API Route (`/daily-ledger`) with Filters & Aggregation (`02-daily-ledger-api.md`)
+- [x] Plan 2.3: Frontend Date Inspector Picker, 4-Metric Tiles & Virtualized Transaction Register (`03-inspector-ui-and-register.md`)
 
 ---
 
 ### Phase 3: Visualizations & Inter-Company Contra Netting Engine
-**Status:** ⬜ Not Started
+**Status:** 🔄 Ready
 **Objective:** Build the Inter-Company Netting Engine with ±48h auto-pairing, contra tag propagation, MCA Rule 3 immutable audit trails, and integrate Chart.js intraday waterfall visualizer.
 **Depends on:** Phase 2
 **Requirements:** REQ-04, REQ-08
@@ -79,7 +79,7 @@ updated: 2026-10-25T18:50:00+05:30
 | Phase | Status | Plans Total | Plans Complete | Target |
 |-------|--------|-------------|----------------|--------|
 | Phase 1: Foundation & Data Architecture | ✅ Complete | 3 | 3 | Sprint 1 |
-| Phase 2: Core Daily Cash Inspector | 🔄 Ready | 3 | 0 | Sprint 2 |
-| Phase 3: Visualizations & Inter-Co Netting | ⬜ Not Started | 3 | 0 | Sprint 3 |
+| Phase 2: Core Daily Cash Inspector | ✅ Complete | 3 | 3 | Sprint 2 |
+| Phase 3: Visualizations & Inter-Co Netting | 🔄 Ready | 3 | 0 | Sprint 3 |
 | Phase 4: Ingestion Rail & Verification | ⬜ Not Started | 3 | 0 | Sprint 4 |
-| **Total** | | **12** | **3** | |
+| **Total** | | **12** | **6** | |
