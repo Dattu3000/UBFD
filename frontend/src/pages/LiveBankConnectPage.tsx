@@ -201,23 +201,23 @@ export const LiveBankConnectPage: React.FC<LiveBankConnectPageProps> = ({ entiti
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2.5">
-            <h2 className="text-xl font-bold text-slate-100 flex items-center gap-2">
-              <Landmark className="w-5 h-5 text-brand-400" />
+            <h2 className="text-xl font-bold text-[#F0EDE4] flex items-center gap-2">
+              <Landmark className="w-5 h-5 text-[#F0EDE4]" />
               Live Bank Connect
             </h2>
-            <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-brand-500/20 text-brand-300 border border-brand-500/30">
+            <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#004741] text-[#F0EDE4] border border-[#134e48]">
               RBI Account Aggregator Rail
             </span>
           </div>
-          <p className="text-xs text-slate-400 mt-1">
-            Automated multi-bank daily transaction fetching with <strong>1-time OTP setup valid for 3 years</strong> (0 daily OTP friction)
+          <p className="text-xs text-[#a2b8b5] mt-1">
+            Automated multi-bank daily transaction fetching with <strong className="text-[#F0EDE4]">1-time OTP setup valid for 3 years</strong> (0 daily OTP friction)
           </p>
         </div>
 
         <div className="flex items-center gap-3">
           <button
             onClick={() => setShowDirectModal(true)}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#111927] hover:bg-[#192437] border border-[#212f45] text-slate-200 text-xs font-semibold transition-all"
+            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#072b27] hover:bg-[#0c3a35] border border-[#134e48] text-[#F0EDE4] text-xs font-semibold transition-all shadow-sm"
           >
             <Plus className="w-3.5 h-3.5" />
             <span>Add Account Number Directly</span>
@@ -228,29 +228,29 @@ export const LiveBankConnectPage: React.FC<LiveBankConnectPageProps> = ({ entiti
               setWizardStep(1);
               setShowConsentModal(true);
             }}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 text-white text-xs font-bold shadow-lg shadow-brand-500/20 transition-all"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#F0EDE4] hover:bg-[#e4dfd3] text-[#004741] text-xs font-bold shadow-lg shadow-[#004741]/30 transition-all"
           >
-            <Sparkles className="w-4 h-4" />
+            <Sparkles className="w-4 h-4 text-[#004741]" />
             <span>Connect via RBI AA (3-Year Consent)</span>
           </button>
         </div>
       </div>
 
       {/* Compliance / Architecture Banner */}
-      <div className="p-4 rounded-2xl bg-[#0c1424] border border-[#1b2840] flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs">
+      <div className="p-4 rounded-2xl bg-[#072b27] border border-[#134e48] flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center shrink-0 border border-emerald-500/20">
+          <div className="w-9 h-9 rounded-xl bg-[#004741] text-[#F0EDE4] flex items-center justify-center shrink-0 border border-[#134e48]">
             <ShieldCheck className="w-5 h-5" />
           </div>
           <div>
-            <p className="font-semibold text-slate-200">RBI Master Directions Compliant (NBFC-AA Framework)</p>
-            <p className="text-slate-400 text-[11px]">
+            <p className="font-semibold text-[#F0EDE4]">RBI Master Directions Compliant (NBFC-AA Framework)</p>
+            <p className="text-[#a2b8b5] text-[11px]">
               Periodic background pull authorization allows UBFD to sync intraday bank statements multiple times a day without bothering customers for OTPs.
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2 text-slate-400 shrink-0 font-mono text-[11px]">
+        <div className="flex items-center gap-2 text-[#a2b8b5] shrink-0 font-mono text-[11px]">
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
           <span>Gateway: ReBIT FIU Standard • Valid 2-3 Years</span>
         </div>
@@ -258,12 +258,12 @@ export const LiveBankConnectPage: React.FC<LiveBankConnectPageProps> = ({ entiti
 
       {/* Feedback Messages */}
       {successBanner && (
-        <div className="p-4 rounded-xl bg-emerald-950/60 border border-emerald-800/60 text-emerald-300 text-xs flex items-center justify-between">
+        <div className="p-4 rounded-xl bg-[#004741]/40 border border-[#134e48] text-[#F0EDE4] text-xs flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4 shrink-0" />
+            <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-400" />
             <span>{successBanner}</span>
           </div>
-          <button onClick={() => setSuccessBanner(null)} className="text-emerald-400 hover:text-emerald-200">
+          <button onClick={() => setSuccessBanner(null)} className="text-[#a2b8b5] hover:text-[#F0EDE4]">
             ✕
           </button>
         </div>
@@ -284,25 +284,25 @@ export const LiveBankConnectPage: React.FC<LiveBankConnectPageProps> = ({ entiti
       {/* Active Consents & Connected Accounts Grid */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-2">
-            <FileCheck2 className="w-4 h-4 text-brand-400" />
+          <h3 className="text-xs font-bold text-[#F0EDE4] uppercase tracking-wider flex items-center gap-2">
+            <FileCheck2 className="w-4 h-4 text-[#F0EDE4]" />
             Active 3-Year Bank Consents ({consents.length})
           </h3>
-          <span className="text-xs text-slate-400">Automated Background Engine</span>
+          <span className="text-xs text-[#a2b8b5]">Automated Background Engine</span>
         </div>
 
         {isLoading ? (
-          <div className="p-12 text-center text-slate-400 text-xs bg-[#0e1626] rounded-2xl border border-[#1a253a]">
+          <div className="p-12 text-center text-[#a2b8b5] text-xs bg-[#072b27] rounded-2xl border border-[#134e48]">
             Loading active bank consents...
           </div>
         ) : consents.length === 0 ? (
-          <div className="p-10 rounded-2xl bg-[#0e1626] border border-[#1a253a] text-center space-y-4">
-            <div className="w-12 h-12 rounded-2xl bg-brand-500/10 text-brand-400 flex items-center justify-center mx-auto">
+          <div className="p-10 rounded-2xl bg-[#072b27] border border-[#134e48] text-center space-y-4">
+            <div className="w-12 h-12 rounded-2xl bg-[#004741] text-[#F0EDE4] flex items-center justify-center mx-auto border border-[#134e48]">
               <Landmark className="w-6 h-6" />
             </div>
             <div>
-              <h4 className="text-sm font-bold text-slate-200">No Live Bank Consents Linked Yet</h4>
-              <p className="text-xs text-slate-400 max-w-md mx-auto mt-1">
+              <h4 className="text-sm font-bold text-[#F0EDE4]">No Live Bank Consents Linked Yet</h4>
+              <p className="text-xs text-[#a2b8b5] max-w-md mx-auto mt-1">
                 Link your commercial bank accounts via the 3-Year RBI Account Aggregator flow, or add your account numbers directly.
               </p>
             </div>
@@ -311,7 +311,7 @@ export const LiveBankConnectPage: React.FC<LiveBankConnectPageProps> = ({ entiti
                 setWizardStep(1);
                 setShowConsentModal(true);
               }}
-              className="px-4 py-2 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-semibold"
+              className="px-4 py-2 rounded-xl bg-[#F0EDE4] hover:bg-[#e4dfd3] text-[#004741] text-xs font-bold shadow-md"
             >
               Start 1-Time Setup
             </button>
@@ -321,23 +321,23 @@ export const LiveBankConnectPage: React.FC<LiveBankConnectPageProps> = ({ entiti
             {consents.map((consent) => (
               <div
                 key={consent.id}
-                className="p-6 rounded-2xl bg-[#0e1626] border border-[#1c2940] shadow-xl space-y-5"
+                className="p-6 rounded-2xl bg-[#072b27] border border-[#134e48] shadow-xl space-y-5"
               >
                 {/* Consent Metadata Header */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#1b273d] pb-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#0e3a34] pb-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20">
-                      <ShieldCheck className="w-5 h-5" />
+                    <div className="w-10 h-10 rounded-xl bg-[#004741] text-[#F0EDE4] flex items-center justify-center border border-[#134e48]">
+                      <ShieldCheck className="w-5 h-5 text-emerald-300" />
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="text-sm font-bold text-slate-100">{consent.entity_name}</span>
-                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 uppercase">
+                        <span className="text-sm font-bold text-[#F0EDE4]">{consent.entity_name}</span>
+                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#004741] text-[#F0EDE4] border border-[#134e48] uppercase">
                           3-Year Consent Active
                         </span>
                       </div>
-                      <p className="text-xs text-slate-400 mt-0.5 font-mono">
-                        Linked Mobile: <span className="text-slate-200">+91 {consent.mobile_number}</span> • Valid until: <span className="text-brand-300">{consent.valid_until}</span>
+                      <p className="text-xs text-[#a2b8b5] mt-0.5 font-mono">
+                        Linked Mobile: <span className="text-[#F0EDE4]">+91 {consent.mobile_number}</span> • Valid until: <span className="text-[#F0EDE4]">{consent.valid_until}</span>
                       </p>
                     </div>
                   </div>
@@ -346,9 +346,9 @@ export const LiveBankConnectPage: React.FC<LiveBankConnectPageProps> = ({ entiti
                     <button
                       onClick={() => syncMutation.mutate(consent.id)}
                       disabled={syncMutation.isPending}
-                      className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#141f33] hover:bg-[#1a2944] border border-[#223350] text-slate-200 text-xs font-semibold transition-all"
+                      className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#004741] hover:bg-[#065b53] border border-[#134e48] text-[#F0EDE4] text-xs font-semibold transition-all shadow-sm"
                     >
-                      <RefreshCw className={`w-3.5 h-3.5 ${syncMutation.isPending ? 'animate-spin text-brand-400' : ''}`} />
+                      <RefreshCw className={`w-3.5 h-3.5 ${syncMutation.isPending ? 'animate-spin text-[#F0EDE4]' : ''}`} />
                       <span>{syncMutation.isPending ? 'Pulling Bank Data...' : 'Sync Now (0 OTP)'}</span>
                     </button>
                   </div>
@@ -356,7 +356,7 @@ export const LiveBankConnectPage: React.FC<LiveBankConnectPageProps> = ({ entiti
 
                 {/* Linked Accounts Roster */}
                 <div className="space-y-3">
-                  <div className="flex items-center justify-between text-xs text-slate-400 uppercase font-semibold">
+                  <div className="flex items-center justify-between text-xs text-[#a2b8b5] uppercase font-semibold">
                     <span>Discovered Commercial Accounts ({consent.accounts.length})</span>
                     <span>Cleared Position</span>
                   </div>
@@ -365,17 +365,17 @@ export const LiveBankConnectPage: React.FC<LiveBankConnectPageProps> = ({ entiti
                     {consent.accounts.map((acc) => (
                       <div
                         key={acc.account_id}
-                        className="p-4 rounded-xl bg-[#121c2e] border border-[#1f2d45] flex items-center justify-between"
+                        className="p-4 rounded-xl bg-[#031d1a] border border-[#134e48] flex items-center justify-between"
                       >
                         <div>
                           <div className="flex items-center gap-1.5">
-                            <span className="text-xs font-bold text-slate-200">{acc.bank_name}</span>
-                            <span className="text-[10px] px-1.5 py-0.2 rounded bg-slate-800 text-slate-400 font-mono">
+                            <span className="text-xs font-bold text-[#F0EDE4]">{acc.bank_name}</span>
+                            <span className="text-[10px] px-1.5 py-0.2 rounded bg-[#072b27] text-[#a2b8b5] font-mono border border-[#134e48]">
                               {acc.account_type}
                             </span>
                           </div>
-                          <p className="text-xs font-mono text-slate-400 mt-0.5">{acc.account_number_mask}</p>
-                          <p className="text-[11px] text-slate-500 font-mono">IFSC: {acc.ifsc_code}</p>
+                          <p className="text-xs font-mono text-[#a2b8b5] mt-0.5">{acc.account_number_mask}</p>
+                          <p className="text-[11px] text-[#a2b8b5]/60 font-mono">IFSC: {acc.ifsc_code}</p>
                         </div>
 
                         <div className="text-right">
@@ -395,18 +395,18 @@ export const LiveBankConnectPage: React.FC<LiveBankConnectPageProps> = ({ entiti
       {/* MODAL 1: Connect via RBI Account Aggregator Wizard */}
       {showConsentModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm">
-          <div className="w-full max-w-xl rounded-2xl bg-[#0f172a] border border-[#1e2a42] shadow-2xl p-6 space-y-5 animate-in fade-in zoom-in-95">
+          <div className="w-full max-w-xl rounded-2xl bg-[#072b27] border border-[#134e48] shadow-2xl p-6 space-y-5 animate-in fade-in zoom-in-95">
             {/* Modal Header */}
-            <div className="flex items-center justify-between border-b border-[#1e2a42] pb-3">
+            <div className="flex items-center justify-between border-b border-[#0e3a34] pb-3">
               <div className="flex items-center gap-2">
-                <Landmark className="w-5 h-5 text-brand-400" />
-                <h3 className="text-base font-bold text-slate-100">
+                <Landmark className="w-5 h-5 text-[#F0EDE4]" />
+                <h3 className="text-base font-bold text-[#F0EDE4]">
                   {wizardStep === 1 ? 'Step 1: 3-Year Live Bank Consent' : 'Step 2: Enter 1-Time Verification OTP'}
                 </h3>
               </div>
               <button
                 onClick={() => setShowConsentModal(false)}
-                className="text-slate-400 hover:text-slate-200 text-sm font-bold"
+                className="text-[#a2b8b5] hover:text-[#F0EDE4] text-sm font-bold"
               >
                 ✕
               </button>
@@ -416,16 +416,16 @@ export const LiveBankConnectPage: React.FC<LiveBankConnectPageProps> = ({ entiti
               <div className="space-y-4">
                 {/* Entity Selector */}
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+                  <label className="block text-xs font-semibold text-[#a2b8b5] uppercase tracking-wider mb-1.5">
                     Select Legal Entity:
                   </label>
                   <select
                     value={selectedEntityId}
                     onChange={(e) => setSelectedEntityId(e.target.value)}
-                    className="w-full bg-[#131d31] border border-[#21304a] rounded-xl px-4 py-2.5 text-xs font-bold text-slate-200"
+                    className="w-full bg-[#031d1a] border border-[#134e48] rounded-xl px-4 py-2.5 text-xs font-bold text-[#F0EDE4]"
                   >
                     {entities.map((ent) => (
-                      <option key={ent.id} value={ent.id}>
+                      <option key={ent.id} value={ent.id} className="bg-[#072b27] text-[#F0EDE4]">
                         {ent.name} ({ent.entity_type})
                       </option>
                     ))}
@@ -434,27 +434,27 @@ export const LiveBankConnectPage: React.FC<LiveBankConnectPageProps> = ({ entiti
 
                 {/* Mobile Number */}
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+                  <label className="block text-xs font-semibold text-[#a2b8b5] uppercase tracking-wider mb-1.5">
                     Mobile Number Linked to Bank Accounts:
                   </label>
-                  <div className="flex items-center bg-[#131d31] border border-[#21304a] rounded-xl px-3 py-2">
-                    <span className="text-xs font-mono text-slate-400 mr-2">+91</span>
+                  <div className="flex items-center bg-[#031d1a] border border-[#134e48] rounded-xl px-3 py-2">
+                    <span className="text-xs font-mono text-[#a2b8b5] mr-2">+91</span>
                     <input
                       type="text"
                       value={mobileNumber}
                       onChange={(e) => setMobileNumber(e.target.value)}
                       placeholder="10-digit mobile number"
-                      className="bg-transparent text-xs font-mono text-slate-200 w-full focus:outline-none"
+                      className="bg-transparent text-xs font-mono text-[#F0EDE4] w-full focus:outline-none"
                     />
                   </div>
-                  <p className="text-[11px] text-slate-400 mt-1">
+                  <p className="text-[11px] text-[#a2b8b5] mt-1">
                     Different entities can use their own respective registered mobile numbers.
                   </p>
                 </div>
 
                 {/* Bank Selection */}
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+                  <label className="block text-xs font-semibold text-[#a2b8b5] uppercase tracking-wider mb-1.5">
                     Select Commercial Banks to Authorize:
                   </label>
                   <div className="grid grid-cols-3 gap-2">
@@ -467,13 +467,13 @@ export const LiveBankConnectPage: React.FC<LiveBankConnectPageProps> = ({ entiti
                           onClick={() => toggleBankSelection(b.code)}
                           className={`p-2.5 rounded-xl border text-xs font-bold transition-all text-left ${
                             isSelected
-                              ? 'bg-brand-500/20 border-brand-500/50 text-brand-300'
-                              : 'bg-[#131d31] border-[#21304a] text-slate-400 hover:text-slate-200'
+                              ? 'bg-[#004741] border-[#1b635c] text-[#F0EDE4] shadow-sm'
+                              : 'bg-[#031d1a] border-[#134e48] text-[#a2b8b5] hover:text-[#F0EDE4]'
                           }`}
                         >
                           <div className="flex items-center justify-between">
                             <span>{b.code}</span>
-                            {isSelected && <CheckCircle2 className="w-3.5 h-3.5 text-brand-400" />}
+                            {isSelected && <CheckCircle2 className="w-3.5 h-3.5 text-[#F0EDE4]" />}
                           </div>
                           <span className="text-[10px] font-normal block truncate mt-0.5">{b.name}</span>
                         </button>
@@ -484,7 +484,7 @@ export const LiveBankConnectPage: React.FC<LiveBankConnectPageProps> = ({ entiti
 
                 {/* Consent Duration Selection */}
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+                  <label className="block text-xs font-semibold text-[#a2b8b5] uppercase tracking-wider mb-1.5">
                     Consent Validity Duration:
                   </label>
                   <div className="grid grid-cols-3 gap-2">
@@ -495,42 +495,42 @@ export const LiveBankConnectPage: React.FC<LiveBankConnectPageProps> = ({ entiti
                         onClick={() => setDurationYears(yr)}
                         className={`py-2 rounded-xl border text-xs font-bold transition-all ${
                           durationYears === yr
-                            ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-300'
-                            : 'bg-[#131d31] border-[#21304a] text-slate-400 hover:text-slate-200'
+                            ? 'bg-[#F0EDE4] border-[#F0EDE4] text-[#004741]'
+                            : 'bg-[#031d1a] border-[#134e48] text-[#a2b8b5] hover:text-[#F0EDE4]'
                         }`}
                       >
                         {yr} Year{yr > 1 ? 's' : ''} {yr === 3 ? '(Recommended)' : ''}
                       </button>
                     ))}
                   </div>
-                  <p className="text-[11px] text-emerald-400 mt-1">
+                  <p className="text-[11px] text-emerald-300 mt-1">
                     ✓ Authorizes 24/7 background sync. Customers are <strong>never</strong> prompted for daily OTPs.
                   </p>
                 </div>
 
                 {/* Optional Custom Account Declaration */}
-                <div className="pt-2 border-t border-[#1e2a42]">
+                <div className="pt-2 border-t border-[#0e3a34]">
                   <div className="flex items-center justify-between mb-2">
-                    <label className="text-xs font-bold text-slate-300 flex items-center gap-1.5 cursor-pointer">
+                    <label className="text-xs font-bold text-[#F0EDE4] flex items-center gap-1.5 cursor-pointer">
                       <input
                         type="checkbox"
                         checked={specifyCustomAccount}
                         onChange={(e) => setSpecifyCustomAccount(e.target.checked)}
-                        className="rounded border-[#21304a] bg-[#131d31] text-brand-500 focus:ring-0"
+                        className="rounded border-[#134e48] bg-[#031d1a] text-[#004741] focus:ring-0"
                       />
                       <span>Declare Exact Account Number to Link</span>
                     </label>
-                    <span className="text-[10px] text-slate-400">Optional</span>
+                    <span className="text-[10px] text-[#a2b8b5]">Optional</span>
                   </div>
 
                   {specifyCustomAccount && (
-                    <div className="grid grid-cols-2 gap-3 p-3 rounded-xl bg-[#131d31] border border-[#21304a]">
+                    <div className="grid grid-cols-2 gap-3 p-3 rounded-xl bg-[#031d1a] border border-[#134e48]">
                       <div>
-                        <label className="text-[10px] text-slate-400 font-semibold block mb-1">Bank</label>
+                        <label className="text-[10px] text-[#a2b8b5] font-semibold block mb-1">Bank</label>
                         <select
                           value={customBankCode}
                           onChange={(e) => setCustomBankCode(e.target.value)}
-                          className="w-full bg-[#18243b] border border-[#243552] rounded-lg px-2.5 py-1.5 text-xs text-slate-200"
+                          className="w-full bg-[#072b27] border border-[#134e48] rounded-lg px-2.5 py-1.5 text-xs text-[#F0EDE4]"
                         >
                           {INDIAN_BANKS.map((b) => (
                             <option key={b.code} value={b.code}>
@@ -541,11 +541,11 @@ export const LiveBankConnectPage: React.FC<LiveBankConnectPageProps> = ({ entiti
                       </div>
 
                       <div>
-                        <label className="text-[10px] text-slate-400 font-semibold block mb-1">Account Type</label>
+                        <label className="text-[10px] text-[#a2b8b5] font-semibold block mb-1">Account Type</label>
                         <select
                           value={customAccountType}
                           onChange={(e) => setCustomAccountType(e.target.value as FacilityType)}
-                          className="w-full bg-[#18243b] border border-[#243552] rounded-lg px-2.5 py-1.5 text-xs text-slate-200"
+                          className="w-full bg-[#072b27] border border-[#134e48] rounded-lg px-2.5 py-1.5 text-xs text-[#F0EDE4]"
                         >
                           <option value="CURRENT">Current Account</option>
                           <option value="OVERDRAFT">Overdraft (OD)</option>
@@ -555,7 +555,7 @@ export const LiveBankConnectPage: React.FC<LiveBankConnectPageProps> = ({ entiti
                       </div>
 
                       <div className="col-span-2">
-                        <label className="text-[10px] text-slate-400 font-semibold block mb-1">
+                        <label className="text-[10px] text-[#a2b8b5] font-semibold block mb-1">
                           Actual Bank Account Number
                         </label>
                         <input
@@ -563,28 +563,28 @@ export const LiveBankConnectPage: React.FC<LiveBankConnectPageProps> = ({ entiti
                           value={customAccountNumber}
                           onChange={(e) => setCustomAccountNumber(e.target.value)}
                           placeholder="e.g. 50200098765432"
-                          className="w-full bg-[#18243b] border border-[#243552] rounded-lg px-3 py-1.5 text-xs font-mono text-slate-200"
+                          className="w-full bg-[#072b27] border border-[#134e48] rounded-lg px-3 py-1.5 text-xs font-mono text-[#F0EDE4]"
                         />
                       </div>
 
                       <div>
-                        <label className="text-[10px] text-slate-400 font-semibold block mb-1">IFSC Code</label>
+                        <label className="text-[10px] text-[#a2b8b5] font-semibold block mb-1">IFSC Code</label>
                         <input
                           type="text"
                           value={customIfsc}
                           onChange={(e) => setCustomIfsc(e.target.value)}
                           placeholder="e.g. HDFC0000240"
-                          className="w-full bg-[#18243b] border border-[#243552] rounded-lg px-3 py-1.5 text-xs font-mono text-slate-200"
+                          className="w-full bg-[#072b27] border border-[#134e48] rounded-lg px-3 py-1.5 text-xs font-mono text-[#F0EDE4]"
                         />
                       </div>
 
                       <div>
-                        <label className="text-[10px] text-slate-400 font-semibold block mb-1">Opening Balance</label>
+                        <label className="text-[10px] text-[#a2b8b5] font-semibold block mb-1">Opening Balance</label>
                         <input
                           type="number"
                           value={customOpeningBal}
                           onChange={(e) => setCustomOpeningBal(e.target.value)}
-                          className="w-full bg-[#18243b] border border-[#243552] rounded-lg px-3 py-1.5 text-xs font-mono text-slate-200"
+                          className="w-full bg-[#072b27] border border-[#134e48] rounded-lg px-3 py-1.5 text-xs font-mono text-[#F0EDE4]"
                         />
                       </div>
                     </div>
@@ -596,7 +596,7 @@ export const LiveBankConnectPage: React.FC<LiveBankConnectPageProps> = ({ entiti
                   <button
                     type="button"
                     onClick={() => setShowConsentModal(false)}
-                    className="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-semibold"
+                    className="px-4 py-2 rounded-xl bg-[#031d1a] border border-[#134e48] text-[#a2b8b5] text-xs font-semibold hover:text-[#F0EDE4]"
                   >
                     Cancel
                   </button>
@@ -604,7 +604,7 @@ export const LiveBankConnectPage: React.FC<LiveBankConnectPageProps> = ({ entiti
                     type="button"
                     onClick={handleStartConsent}
                     disabled={initiateMutation.isPending || !mobileNumber}
-                    className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold shadow-lg shadow-brand-500/20 disabled:opacity-50"
+                    className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#F0EDE4] hover:bg-[#e4dfd3] text-[#004741] text-xs font-bold shadow-lg shadow-[#004741]/20 disabled:opacity-50"
                   >
                     <span>{initiateMutation.isPending ? 'Generating Consent Handle...' : 'Send 1-Time OTP'}</span>
                     <ArrowRight className="w-4 h-4" />
@@ -613,19 +613,19 @@ export const LiveBankConnectPage: React.FC<LiveBankConnectPageProps> = ({ entiti
               </div>
             ) : (
               <div className="space-y-4">
-                <div className="p-4 rounded-xl bg-[#131d31] border border-[#21304a] text-center space-y-2">
-                  <Smartphone className="w-8 h-8 text-brand-400 mx-auto" />
-                  <h4 className="text-sm font-bold text-slate-200">Enter One-Time Verification OTP</h4>
-                  <p className="text-xs text-slate-400">
-                    OTP sent to registered mobile <span className="text-slate-200 font-mono">+91 {mobileNumber}</span>
+                <div className="p-4 rounded-xl bg-[#031d1a] border border-[#134e48] text-center space-y-2">
+                  <Smartphone className="w-8 h-8 text-[#F0EDE4] mx-auto" />
+                  <h4 className="text-sm font-bold text-[#F0EDE4]">Enter One-Time Verification OTP</h4>
+                  <p className="text-xs text-[#a2b8b5]">
+                    OTP sent to registered mobile <span className="text-[#F0EDE4] font-mono">+91 {mobileNumber}</span>
                   </p>
-                  <div className="inline-flex px-3 py-1 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-300 font-mono text-[11px]">
+                  <div className="inline-flex px-3 py-1 rounded-full bg-[#004741] border border-[#134e48] text-[#F0EDE4] font-mono text-[11px]">
                     Sandbox Demo Code: <strong>123456</strong>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5 text-center">
+                  <label className="block text-xs font-semibold text-[#a2b8b5] uppercase tracking-wider mb-1.5 text-center">
                     6-Digit Verification Code:
                   </label>
                   <input
@@ -633,11 +633,11 @@ export const LiveBankConnectPage: React.FC<LiveBankConnectPageProps> = ({ entiti
                     maxLength={6}
                     value={otpCode}
                     onChange={(e) => setOtpCode(e.target.value)}
-                    className="w-48 mx-auto block text-center tracking-[0.5em] text-lg font-mono font-bold bg-[#131d31] border-2 border-brand-500/50 rounded-xl py-2.5 text-slate-100 focus:outline-none focus:border-brand-400"
+                    className="w-48 mx-auto block text-center tracking-[0.5em] text-lg font-mono font-bold bg-[#031d1a] border-2 border-[#134e48] rounded-xl py-2.5 text-[#F0EDE4] focus:outline-none focus:border-[#F0EDE4]"
                   />
                 </div>
 
-                <div className="p-3 rounded-xl bg-emerald-950/40 border border-emerald-900/50 text-[11px] text-emerald-300 text-center">
+                <div className="p-3 rounded-xl bg-[#004741]/40 border border-[#134e48] text-[11px] text-[#F0EDE4] text-center">
                   🔒 Approves <strong>3 Years</strong> of recurring automated data sync. No daily OTPs required.
                 </div>
 
@@ -645,7 +645,7 @@ export const LiveBankConnectPage: React.FC<LiveBankConnectPageProps> = ({ entiti
                   <button
                     type="button"
                     onClick={() => setWizardStep(1)}
-                    className="text-xs text-slate-400 hover:text-slate-200 font-semibold"
+                    className="text-xs text-[#a2b8b5] hover:text-[#F0EDE4] font-semibold"
                   >
                     ← Back to parameters
                   </button>
@@ -654,7 +654,7 @@ export const LiveBankConnectPage: React.FC<LiveBankConnectPageProps> = ({ entiti
                     type="button"
                     onClick={handleVerifyOtp}
                     disabled={verifyMutation.isPending || otpCode.length !== 6}
-                    className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-lg shadow-emerald-500/20 disabled:opacity-50"
+                    className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#F0EDE4] hover:bg-[#e4dfd3] text-[#004741] text-xs font-bold shadow-lg shadow-[#004741]/20 disabled:opacity-50"
                   >
                     <span>{verifyMutation.isPending ? 'Activating 3-Year Token...' : 'Verify & Activate'}</span>
                     <CheckCircle2 className="w-4 h-4" />
@@ -669,15 +669,15 @@ export const LiveBankConnectPage: React.FC<LiveBankConnectPageProps> = ({ entiti
       {/* MODAL 2: Add Actual Account Number Directly */}
       {showDirectModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm">
-          <div className="w-full max-w-lg rounded-2xl bg-[#0f172a] border border-[#1e2a42] shadow-2xl p-6 space-y-4 animate-in fade-in zoom-in-95">
-            <div className="flex items-center justify-between border-b border-[#1e2a42] pb-3">
-              <h3 className="text-base font-bold text-slate-100 flex items-center gap-2">
-                <Building2 className="w-5 h-5 text-brand-400" />
+          <div className="w-full max-w-lg rounded-2xl bg-[#072b27] border border-[#134e48] shadow-2xl p-6 space-y-4 animate-in fade-in zoom-in-95">
+            <div className="flex items-center justify-between border-b border-[#0e3a34] pb-3">
+              <h3 className="text-base font-bold text-[#F0EDE4] flex items-center gap-2">
+                <Building2 className="w-5 h-5 text-[#F0EDE4]" />
                 Add Actual Bank Account Directly
               </h3>
               <button
                 onClick={() => setShowDirectModal(false)}
-                className="text-slate-400 hover:text-slate-200 text-sm font-bold"
+                className="text-[#a2b8b5] hover:text-[#F0EDE4] text-sm font-bold"
               >
                 ✕
               </button>
@@ -685,14 +685,14 @@ export const LiveBankConnectPage: React.FC<LiveBankConnectPageProps> = ({ entiti
 
             <div className="space-y-3">
               <div>
-                <label className="text-xs font-semibold text-slate-300 block mb-1">Target Legal Entity</label>
+                <label className="text-xs font-semibold text-[#a2b8b5] block mb-1">Target Legal Entity</label>
                 <select
                   value={directEntityId}
                   onChange={(e) => setDirectEntityId(e.target.value)}
-                  className="w-full bg-[#131d31] border border-[#21304a] rounded-xl px-3 py-2 text-xs text-slate-200"
+                  className="w-full bg-[#031d1a] border border-[#134e48] rounded-xl px-3 py-2 text-xs text-[#F0EDE4]"
                 >
                   {entities.map((ent) => (
-                    <option key={ent.id} value={ent.id}>
+                    <option key={ent.id} value={ent.id} className="bg-[#072b27] text-[#F0EDE4]">
                       {ent.name}
                     </option>
                   ))}
@@ -701,7 +701,7 @@ export const LiveBankConnectPage: React.FC<LiveBankConnectPageProps> = ({ entiti
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-xs font-semibold text-slate-300 block mb-1">Bank</label>
+                  <label className="text-xs font-semibold text-[#a2b8b5] block mb-1">Bank</label>
                   <select
                     value={directBankCode}
                     onChange={(e) => {
@@ -709,10 +709,10 @@ export const LiveBankConnectPage: React.FC<LiveBankConnectPageProps> = ({ entiti
                       const b = INDIAN_BANKS.find((x) => x.code === e.target.value);
                       if (b) setDirectBankName(b.name);
                     }}
-                    className="w-full bg-[#131d31] border border-[#21304a] rounded-xl px-3 py-2 text-xs text-slate-200"
+                    className="w-full bg-[#031d1a] border border-[#134e48] rounded-xl px-3 py-2 text-xs text-[#F0EDE4]"
                   >
                     {INDIAN_BANKS.map((b) => (
-                      <option key={b.code} value={b.code}>
+                      <option key={b.code} value={b.code} className="bg-[#072b27] text-[#F0EDE4]">
                         {b.name}
                       </option>
                     ))}
@@ -720,11 +720,11 @@ export const LiveBankConnectPage: React.FC<LiveBankConnectPageProps> = ({ entiti
                 </div>
 
                 <div>
-                  <label className="text-xs font-semibold text-slate-300 block mb-1">Account Type</label>
+                  <label className="text-xs font-semibold text-[#a2b8b5] block mb-1">Account Type</label>
                   <select
                     value={directType}
                     onChange={(e) => setDirectType(e.target.value as FacilityType)}
-                    className="w-full bg-[#131d31] border border-[#21304a] rounded-xl px-3 py-2 text-xs text-slate-200"
+                    className="w-full bg-[#031d1a] border border-[#134e48] rounded-xl px-3 py-2 text-xs text-[#F0EDE4]"
                   >
                     <option value="CURRENT">Current Account</option>
                     <option value="OVERDRAFT">Overdraft (OD)</option>
@@ -735,35 +735,35 @@ export const LiveBankConnectPage: React.FC<LiveBankConnectPageProps> = ({ entiti
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-slate-300 block mb-1">Actual Account Number</label>
+                <label className="text-xs font-semibold text-[#a2b8b5] block mb-1">Actual Account Number</label>
                 <input
                   type="text"
                   value={directAccNumber}
                   onChange={(e) => setDirectAccNumber(e.target.value)}
                   placeholder="e.g. 109283746519"
-                  className="w-full bg-[#131d31] border border-[#21304a] rounded-xl px-3 py-2 text-xs font-mono text-slate-200"
+                  className="w-full bg-[#031d1a] border border-[#134e48] rounded-xl px-3 py-2 text-xs font-mono text-[#F0EDE4]"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-xs font-semibold text-slate-300 block mb-1">IFSC Code</label>
+                  <label className="text-xs font-semibold text-[#a2b8b5] block mb-1">IFSC Code</label>
                   <input
                     type="text"
                     value={directIfsc}
                     onChange={(e) => setDirectIfsc(e.target.value)}
                     placeholder="e.g. HDFC0000240"
-                    className="w-full bg-[#131d31] border border-[#21304a] rounded-xl px-3 py-2 text-xs font-mono text-slate-200"
+                    className="w-full bg-[#031d1a] border border-[#134e48] rounded-xl px-3 py-2 text-xs font-mono text-[#F0EDE4]"
                   />
                 </div>
 
                 <div>
-                  <label className="text-xs font-semibold text-slate-300 block mb-1">Opening Cleared Balance</label>
+                  <label className="text-xs font-semibold text-[#a2b8b5] block mb-1">Opening Cleared Balance</label>
                   <input
                     type="number"
                     value={directBalance}
                     onChange={(e) => setDirectBalance(e.target.value)}
-                    className="w-full bg-[#131d31] border border-[#21304a] rounded-xl px-3 py-2 text-xs font-mono text-slate-200"
+                    className="w-full bg-[#031d1a] border border-[#134e48] rounded-xl px-3 py-2 text-xs font-mono text-[#F0EDE4]"
                   />
                 </div>
               </div>
@@ -772,7 +772,7 @@ export const LiveBankConnectPage: React.FC<LiveBankConnectPageProps> = ({ entiti
                 <button
                   type="button"
                   onClick={() => setShowDirectModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-semibold"
+                  className="px-4 py-2 rounded-xl bg-[#031d1a] border border-[#134e48] text-[#a2b8b5] text-xs font-semibold hover:text-[#F0EDE4]"
                 >
                   Cancel
                 </button>
@@ -780,7 +780,7 @@ export const LiveBankConnectPage: React.FC<LiveBankConnectPageProps> = ({ entiti
                   type="button"
                   onClick={handleAddDirect}
                   disabled={directAccountMutation.isPending || !directAccNumber}
-                  className="px-6 py-2 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold shadow-lg shadow-brand-500/20 disabled:opacity-50"
+                  className="px-6 py-2 rounded-xl bg-[#F0EDE4] hover:bg-[#e4dfd3] text-[#004741] text-xs font-bold shadow-lg shadow-[#004741]/20 disabled:opacity-50"
                 >
                   {directAccountMutation.isPending ? 'Saving...' : 'Add Account'}
                 </button>

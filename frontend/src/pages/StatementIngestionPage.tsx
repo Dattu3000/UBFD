@@ -122,11 +122,11 @@ export const StatementIngestionPage: React.FC<StatementIngestionPageProps> = ({
     <div className="p-8 space-y-8 max-w-7xl mx-auto">
       {/* Header */}
       <div>
-        <h2 className="text-base font-bold text-slate-100 flex items-center gap-2">
-          <FileSpreadsheet className="w-5 h-5 text-emerald-400" />
+        <h2 className="text-base font-bold text-[#F0EDE4] flex items-center gap-2">
+          <FileSpreadsheet className="w-5 h-5 text-[#F0EDE4]" />
           Bank Statement Ingestion Rail
         </h2>
-        <p className="text-xs text-slate-400 mt-1">
+        <p className="text-xs text-[#a2b8b5] mt-1">
           Direct ingestion for SBI, ICICI, and HDFC bank statements (PDF table extracts & CSV feeds)
         </p>
       </div>
@@ -134,26 +134,26 @@ export const StatementIngestionPage: React.FC<StatementIngestionPageProps> = ({
       {/* Main Grid: Upload Controls + Quick Samples */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left: Upload Form */}
-        <div className="lg:col-span-2 p-6 rounded-2xl bg-[#0e1626] border border-[#1a253a] shadow-xl space-y-5">
+        <div className="lg:col-span-2 p-6 rounded-2xl bg-[#072b27] border border-[#134e48] shadow-xl space-y-5">
           {/* Target Account Selector */}
           <div>
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+            <label className="block text-xs font-semibold text-[#a2b8b5] uppercase tracking-wider mb-2">
               Select Destination Commercial Account:
             </label>
             <select
               value={selectedAccountId}
               onChange={(e) => setSelectedAccountId(e.target.value)}
-              className="w-full bg-[#131d31] border border-[#21304a] rounded-xl px-4 py-2.5 text-xs font-bold text-slate-200 focus:outline-none focus:border-brand-500/60"
+              className="w-full bg-[#031d1a] border border-[#134e48] rounded-xl px-4 py-2.5 text-xs font-bold text-[#F0EDE4] focus:outline-none focus:border-[#F0EDE4]"
             >
               {accounts.map((acc) => (
-                <option key={acc.account_id} value={acc.account_id}>
+                <option key={acc.account_id} value={acc.account_id} className="bg-[#072b27] text-[#F0EDE4]">
                   {acc.bank_name} ({acc.account_number_mask}) — {acc.entity_name} [{acc.account_type}]
                 </option>
               ))}
             </select>
             {selectedAccount && (
-              <p className="text-[11px] text-slate-400 mt-1.5 font-mono">
-                Bank Code: <span className="text-brand-300 font-semibold">{selectedAccount.bank_code}</span> • IFSC: {selectedAccount.ifsc_code}
+              <p className="text-[11px] text-[#a2b8b5] mt-1.5 font-mono">
+                Bank Code: <span className="text-[#F0EDE4] font-semibold">{selectedAccount.bank_code}</span> • IFSC: {selectedAccount.ifsc_code}
               </p>
             )}
           </div>
@@ -162,7 +162,7 @@ export const StatementIngestionPage: React.FC<StatementIngestionPageProps> = ({
           <div
             onDragOver={(e) => e.preventDefault()}
             onDrop={handleFileDrop}
-            className="border-2 border-dashed border-[#243552] hover:border-brand-500/60 rounded-2xl p-8 text-center bg-[#111a2d]/50 transition-all flex flex-col items-center justify-center space-y-3 cursor-pointer group"
+            className="border-2 border-dashed border-[#134e48] hover:border-[#1b635c] rounded-2xl p-8 text-center bg-[#031d1a]/50 transition-all flex flex-col items-center justify-center space-y-3 cursor-pointer group"
             onClick={() => document.getElementById('file-upload-input')?.click()}
           >
             <input
@@ -176,15 +176,15 @@ export const StatementIngestionPage: React.FC<StatementIngestionPageProps> = ({
                 }
               }}
             />
-            <div className="w-12 h-12 rounded-2xl bg-brand-500/10 group-hover:bg-brand-500/20 text-brand-400 flex items-center justify-center transition-colors">
+            <div className="w-12 h-12 rounded-2xl bg-[#004741] group-hover:bg-[#065b53] text-[#F0EDE4] flex items-center justify-center transition-colors border border-[#134e48]">
               <UploadCloud className="w-6 h-6" />
             </div>
 
             <div>
-              <p className="text-sm font-bold text-slate-200">
+              <p className="text-sm font-bold text-[#F0EDE4]">
                 {selectedFile ? selectedFile.name : 'Click or drag bank statement here'}
               </p>
-              <p className="text-xs text-slate-400 mt-0.5">
+              <p className="text-xs text-[#a2b8b5] mt-0.5">
                 {selectedFile
                   ? `${(selectedFile.size / 1024).toFixed(1)} KB • Ready for extraction`
                   : 'Supports CSV feeds & PDF table exports'}
@@ -198,7 +198,7 @@ export const StatementIngestionPage: React.FC<StatementIngestionPageProps> = ({
               <button
                 type="button"
                 onClick={() => setSelectedFile(null)}
-                className="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-semibold"
+                className="px-4 py-2 rounded-xl bg-[#031d1a] border border-[#134e48] text-[#a2b8b5] text-xs font-semibold hover:text-[#F0EDE4]"
               >
                 Clear
               </button>
@@ -206,7 +206,7 @@ export const StatementIngestionPage: React.FC<StatementIngestionPageProps> = ({
             <button
               onClick={handleUploadSubmit}
               disabled={!selectedFile || !selectedAccountId || uploadMutation.isPending}
-              className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 text-white text-xs font-bold shadow-lg shadow-brand-500/20 disabled:opacity-50 transition-all"
+              className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#F0EDE4] hover:bg-[#e4dfd3] text-[#004741] text-xs font-bold shadow-lg shadow-[#004741]/20 disabled:opacity-50 transition-all"
             >
               <span>{uploadMutation.isPending ? 'Extracting & Netting...' : 'Parse & Ingest Into Ledger'}</span>
               <ArrowRight className="w-4 h-4" />
@@ -215,51 +215,51 @@ export const StatementIngestionPage: React.FC<StatementIngestionPageProps> = ({
         </div>
 
         {/* Right: Instant Pre-loaded Samples for Validation */}
-        <div className="p-6 rounded-2xl bg-[#0e1626] border border-[#1a253a] shadow-xl space-y-4">
-          <div className="flex items-center gap-2 text-xs font-bold text-slate-200 uppercase tracking-wider">
-            <Sparkles className="w-4 h-4 text-brand-400" />
+        <div className="p-6 rounded-2xl bg-[#072b27] border border-[#134e48] shadow-xl space-y-4">
+          <div className="flex items-center gap-2 text-xs font-bold text-[#F0EDE4] uppercase tracking-wider">
+            <Sparkles className="w-4 h-4 text-[#F0EDE4]" />
             <span>Interactive Sample Statements</span>
           </div>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-[#a2b8b5]">
             Click to load realistic commercial bank statements for instant test ingestion:
           </p>
 
           <div className="space-y-2.5">
             <button
               onClick={() => handleLoadSampleStatement('HDFC')}
-              className="w-full p-3 rounded-xl bg-[#131d31] hover:bg-[#1a2740] border border-[#21304a] text-left transition-colors flex items-center justify-between"
+              className="w-full p-3 rounded-xl bg-[#031d1a] hover:bg-[#0c3a35] border border-[#134e48] text-left transition-colors flex items-center justify-between"
             >
               <div>
                 <span className="text-xs font-bold text-blue-300">HDFC Bank Operating Feed</span>
-                <p className="text-[11px] text-slate-400">Includes customer receipts + Sister intra-group transfer</p>
+                <p className="text-[11px] text-[#a2b8b5]">Includes customer receipts + Sister intra-group transfer</p>
               </div>
-              <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-blue-950 text-blue-300 border border-blue-800">
+              <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-[#004741] text-[#F0EDE4] border border-[#134e48]">
                 Load
               </span>
             </button>
 
             <button
               onClick={() => handleLoadSampleStatement('ICICI')}
-              className="w-full p-3 rounded-xl bg-[#131d31] hover:bg-[#1a2740] border border-[#21304a] text-left transition-colors flex items-center justify-between"
+              className="w-full p-3 rounded-xl bg-[#031d1a] hover:bg-[#0c3a35] border border-[#134e48] text-left transition-colors flex items-center justify-between"
             >
               <div>
                 <span className="text-xs font-bold text-orange-300">ICICI Bank Logistics Counterpart</span>
-                <p className="text-[11px] text-slate-400">Matching ₹1,20,000 contra credit + fuel expense</p>
+                <p className="text-[11px] text-[#a2b8b5]">Matching ₹1,20,000 contra credit + fuel expense</p>
               </div>
-              <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-orange-950 text-orange-300 border border-orange-800">
+              <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-[#004741] text-[#F0EDE4] border border-[#134e48]">
                 Load
               </span>
             </button>
 
             <button
               onClick={() => handleLoadSampleStatement('SBI')}
-              className="w-full p-3 rounded-xl bg-[#131d31] hover:bg-[#1a2740] border border-[#21304a] text-left transition-colors flex items-center justify-between"
+              className="w-full p-3 rounded-xl bg-[#031d1a] hover:bg-[#0c3a35] border border-[#134e48] text-left transition-colors flex items-center justify-between"
             >
               <div>
                 <span className="text-xs font-bold text-sky-300">State Bank of India (SBI)</span>
-                <p className="text-[11px] text-slate-400">GST statutory challan + interest credits</p>
+                <p className="text-[11px] text-[#a2b8b5]">GST statutory challan + interest credits</p>
               </div>
-              <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-sky-950 text-sky-300 border border-sky-800">
+              <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-[#004741] text-[#F0EDE4] border border-[#134e48]">
                 Load
               </span>
             </button>
@@ -277,33 +277,33 @@ export const StatementIngestionPage: React.FC<StatementIngestionPageProps> = ({
 
       {/* Successful Ingestion Report */}
       {uploadResult && (
-        <div className="p-6 rounded-2xl bg-[#0e1626] border border-emerald-800/50 shadow-2xl space-y-5">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-[#1c2940] pb-4">
+        <div className="p-6 rounded-2xl bg-[#072b27] border border-[#134e48] shadow-2xl space-y-5">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-[#0e3a34] pb-4">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-full bg-[#004741] text-emerald-400 flex items-center justify-center border border-[#134e48]">
                 <CheckCircle2 className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-sm font-bold text-slate-100">
+                <h3 className="text-sm font-bold text-[#F0EDE4]">
                   Statement Successfully Ingested & Verified
                 </h3>
-                <p className="text-xs text-slate-400">
+                <p className="text-xs text-[#a2b8b5]">
                   Target Account: {uploadResult.bank_name} • File: {uploadResult.filename}
                 </p>
               </div>
             </div>
 
             <div className="flex items-center gap-4 text-xs">
-              <div className="px-3 py-1.5 rounded-xl bg-[#121c2e] border border-[#1f2d42]">
-                <span className="text-slate-400">Ingested: </span>
-                <span className="font-bold text-slate-100 font-mono">{uploadResult.ingested_count} rows</span>
+              <div className="px-3 py-1.5 rounded-xl bg-[#031d1a] border border-[#134e48]">
+                <span className="text-[#a2b8b5]">Ingested: </span>
+                <span className="font-bold text-[#F0EDE4] font-mono">{uploadResult.ingested_count} rows</span>
               </div>
-              <div className="px-3 py-1.5 rounded-xl bg-contra-DEFAULT/20 border border-contra-DEFAULT/30 text-contra-light">
+              <div className="px-3 py-1.5 rounded-xl bg-[#004741] border border-[#134e48] text-[#F0EDE4]">
                 <span>Contra Auto-Paired: </span>
                 <span className="font-bold font-mono">{uploadResult.contra_paired_count}</span>
               </div>
-              <div className="px-3 py-1.5 rounded-xl bg-[#121c2e] border border-[#1f2d42]">
-                <span className="text-slate-400">New Cleared Balance: </span>
+              <div className="px-3 py-1.5 rounded-xl bg-[#031d1a] border border-[#134e48]">
+                <span className="text-[#a2b8b5]">New Cleared Balance: </span>
                 <CurrencyDisplay amount={uploadResult.latest_cleared_balance} size="md" colored={true} />
               </div>
             </div>
@@ -311,12 +311,12 @@ export const StatementIngestionPage: React.FC<StatementIngestionPageProps> = ({
 
           {/* Preview Lines */}
           <div className="space-y-2">
-            <h4 className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+            <h4 className="text-xs font-semibold text-[#a2b8b5] uppercase tracking-wider">
               Ingestion Extraction Sample:
             </h4>
-            <div className="overflow-x-auto rounded-xl border border-[#182338]">
+            <div className="overflow-x-auto rounded-xl border border-[#0e3a34]">
               <table className="w-full text-left text-xs">
-                <thead className="bg-[#121c2e] text-slate-400 uppercase font-semibold border-b border-[#182338]">
+                <thead className="bg-[#05221e] text-[#a2b8b5] uppercase font-semibold border-b border-[#0e3a34]">
                   <tr>
                     <th className="py-2.5 px-3">Date</th>
                     <th className="py-2.5 px-3">Reference</th>
@@ -327,23 +327,23 @@ export const StatementIngestionPage: React.FC<StatementIngestionPageProps> = ({
                     <th className="py-2.5 px-3">Category</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#172338]">
+                <tbody className="divide-y divide-[#0e3a34]">
                   {uploadResult.preview.map((row: any, idx: number) => (
-                    <tr key={idx} className="hover:bg-[#131d33]">
-                      <td className="py-2.5 px-3 font-mono text-slate-400">{row.date}</td>
-                      <td className="py-2.5 px-3 font-mono text-slate-300 text-[11px]">{row.ref}</td>
-                      <td className="py-2.5 px-3 max-w-xs truncate text-slate-200">{row.narration}</td>
+                    <tr key={idx} className="hover:bg-[#0a3832]">
+                      <td className="py-2.5 px-3 font-mono text-[#a2b8b5]">{row.date}</td>
+                      <td className="py-2.5 px-3 font-mono text-[#F0EDE4] text-[11px]">{row.ref}</td>
+                      <td className="py-2.5 px-3 max-w-xs truncate text-[#F0EDE4]">{row.narration}</td>
                       <td className="py-2.5 px-3 text-right font-mono text-rose-400 font-semibold">
                         {row.debit > 0 ? `₹${row.debit.toLocaleString('en-IN')}` : '—'}
                       </td>
                       <td className="py-2.5 px-3 text-right font-mono text-emerald-400 font-semibold">
                         {row.credit > 0 ? `₹${row.credit.toLocaleString('en-IN')}` : '—'}
                       </td>
-                      <td className="py-2.5 px-3 text-right font-mono text-slate-200 font-bold">
+                      <td className="py-2.5 px-3 text-right font-mono text-[#F0EDE4] font-bold">
                         ₹{row.running_balance.toLocaleString('en-IN')}
                       </td>
                       <td className="py-2.5 px-3">
-                        <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-slate-800 text-slate-300">
+                        <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-[#031d1a] text-[#F0EDE4] border border-[#134e48]">
                           {row.category}
                         </span>
                       </td>

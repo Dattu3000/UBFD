@@ -4,27 +4,45 @@
 
 @layer base {
   body {
-    background-color: #090d16;
-    color: #f1f5f9;
+    background-color: #031a18; /* Deep Cyprus Canvas */
+    color: #F0EDE4;            /* Sand Primary Text */
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  ::selection {
+    background-color: #004741;
+    color: #F0EDE4;
   }
 }
 
-/* Custom Scrollbars */
+/* Custom Cyprus & Sand Scrollbars */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #090d16;
+  background: #021413;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  background: #10423d;
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: #185a53;
+}
+
+/* Theme Utilities */
+.sand-pill {
+  background-color: #F0EDE4;
+  color: #004741;
+  border: 1px solid #e4ded2;
+}
+
+.cyprus-pill {
+  background-color: #004741;
+  color: #F0EDE4;
+  border: 1px solid #145952;
 }

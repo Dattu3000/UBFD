@@ -62,7 +62,7 @@ export const AppContent: React.FC = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-[#090d16] text-slate-100 antialiased font-sans">
+    <div className="flex min-h-screen bg-[#031a18] text-[#F0EDE4] antialiased font-sans">
       {/* Global Sidebar Navigation */}
       <Sidebar
         currentTab={currentTab}

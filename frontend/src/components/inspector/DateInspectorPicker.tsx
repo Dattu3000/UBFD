@@ -30,19 +30,19 @@ export const DateInspectorPicker: React.FC<DateInspectorPickerProps> = ({
   ];
 
   return (
-    <div className="flex flex-wrap items-center justify-between gap-4 p-4 rounded-2xl bg-[#0e1626] border border-[#1a253a] shadow-lg">
+    <div className="flex flex-wrap items-center justify-between gap-4 p-4 rounded-2xl bg-[#072b27] border border-[#134e48] shadow-lg">
       <div className="flex items-center gap-2">
         <button
           onClick={handlePrevDay}
-          className="w-8 h-8 rounded-lg bg-[#141d31] hover:bg-[#1a263f] border border-[#21304a] text-slate-300 flex items-center justify-center transition-colors"
+          className="w-8 h-8 rounded-lg bg-[#031d1a] hover:bg-[#0c3a35] border border-[#134e48] text-[#F0EDE4] flex items-center justify-center transition-colors"
           title="Previous Business Day"
         >
           <ChevronLeft className="w-4 h-4" />
         </button>
 
-        <div className="relative flex items-center bg-[#141d31] border border-[#21304a] px-3.5 py-1.5 rounded-xl">
-          <CalendarIcon className="w-4 h-4 text-brand-400 mr-2 shrink-0" />
-          <span className="font-semibold text-slate-100 text-sm font-mono tracking-wide mr-3">
+        <div className="relative flex items-center bg-[#031d1a] border border-[#134e48] px-3.5 py-1.5 rounded-xl">
+          <CalendarIcon className="w-4 h-4 text-[#F0EDE4] mr-2 shrink-0" />
+          <span className="font-semibold text-[#F0EDE4] text-sm font-mono tracking-wide mr-3">
             {formatDateIndian(currentDate)}
           </span>
           <input
@@ -51,14 +51,14 @@ export const DateInspectorPicker: React.FC<DateInspectorPickerProps> = ({
             onChange={(e) => e.target.value && onDateChange(e.target.value)}
             className="opacity-0 absolute inset-0 w-full h-full cursor-pointer"
           />
-          <span className="text-[10px] text-slate-400 uppercase font-mono px-1.5 py-0.5 rounded bg-slate-800">
+          <span className="text-[10px] text-[#a2b8b5] uppercase font-mono px-1.5 py-0.5 rounded bg-[#072b27] border border-[#134e48]">
             Select
           </span>
         </div>
 
         <button
           onClick={handleNextDay}
-          className="w-8 h-8 rounded-lg bg-[#141d31] hover:bg-[#1a263f] border border-[#21304a] text-slate-300 flex items-center justify-center transition-colors"
+          className="w-8 h-8 rounded-lg bg-[#031d1a] hover:bg-[#0c3a35] border border-[#134e48] text-[#F0EDE4] flex items-center justify-center transition-colors"
           title="Next Business Day"
         >
           <ChevronRight className="w-4 h-4" />
@@ -67,15 +67,15 @@ export const DateInspectorPicker: React.FC<DateInspectorPickerProps> = ({
 
       {/* Quick Jump Shortcuts */}
       <div className="flex items-center gap-2">
-        <span className="text-xs text-slate-400 font-medium hidden sm:inline">Quick Jump:</span>
+        <span className="text-xs text-[#a2b8b5] font-medium hidden sm:inline">Quick Jump:</span>
         {quickDates.map((q) => (
           <button
             key={q.value}
             onClick={() => onDateChange(q.value)}
             className={`px-3 py-1 rounded-lg text-xs font-medium transition-all ${
               currentDate === q.value
-                ? 'bg-brand-500 text-white shadow-md shadow-brand-500/30'
-                : 'bg-[#141d31] hover:bg-[#1a263f] text-slate-300 border border-[#21304a]'
+                ? 'bg-[#F0EDE4] text-[#004741] font-bold shadow-md'
+                : 'bg-[#031d1a] hover:bg-[#0c3a35] text-[#F0EDE4] border border-[#134e48]'
             }`}
           >
             {q.label}

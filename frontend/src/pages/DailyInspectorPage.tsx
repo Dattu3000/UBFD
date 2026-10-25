@@ -51,12 +51,12 @@ export const DailyInspectorPage: React.FC<DailyInspectorPageProps> = ({
   return (
     <div className="p-8 space-y-6 max-w-7xl mx-auto">
       {/* 1. Account Selector & Meta Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-2xl bg-[#0e1626] border border-[#1a253a] shadow-lg">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-2xl bg-[#072b27] border border-[#134e48] shadow-lg">
         <div className="flex items-center gap-3">
           {onBackToOverview && (
             <button
               onClick={onBackToOverview}
-              className="w-9 h-9 rounded-xl bg-[#141d31] hover:bg-[#1b2742] text-slate-300 border border-[#21304a] flex items-center justify-center transition-colors"
+              className="w-9 h-9 rounded-xl bg-[#031d1a] hover:bg-[#0c3a35] text-[#F0EDE4] border border-[#134e48] flex items-center justify-center transition-colors"
               title="Return to Group Overview"
             >
               <ArrowLeft className="w-4 h-4" />
@@ -64,17 +64,17 @@ export const DailyInspectorPage: React.FC<DailyInspectorPageProps> = ({
           )}
 
           <div>
-            <div className="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-1">
+            <div className="text-xs text-[#a2b8b5] font-semibold uppercase tracking-wider mb-1">
               Active Commercial Account:
             </div>
             <div className="flex items-center gap-3">
               <select
                 value={selectedAccountId}
                 onChange={(e) => setSelectedAccountId(e.target.value)}
-                className="bg-[#141d31] border border-[#21304a] rounded-xl px-3 py-1.5 text-sm font-bold text-slate-100 focus:outline-none focus:border-brand-500/60 cursor-pointer"
+                className="bg-[#031d1a] border border-[#134e48] rounded-xl px-3 py-1.5 text-sm font-bold text-[#F0EDE4] focus:outline-none focus:border-[#F0EDE4] cursor-pointer"
               >
                 {accounts.map((acc) => (
-                  <option key={acc.account_id} value={acc.account_id} className="bg-[#101827]">
+                  <option key={acc.account_id} value={acc.account_id} className="bg-[#072b27] text-[#F0EDE4]">
                     {acc.bank_name} ({acc.account_number_mask}) — {acc.entity_name}
                   </option>
                 ))}
@@ -86,15 +86,15 @@ export const DailyInspectorPage: React.FC<DailyInspectorPageProps> = ({
         {/* Current Account Meta Badges */}
         {selectedAccount && (
           <div className="flex items-center gap-2">
-            <span className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-brand-950/50 text-brand-300 border border-brand-800/50">
+            <span className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-[#004741] text-[#F0EDE4] border border-[#134e48]">
               {selectedAccount.account_type}
             </span>
             {selectedAccount.custom_tag && (
-              <span className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700">
+              <span className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-[#031d1a] text-[#F0EDE4] border border-[#134e48]">
                 {selectedAccount.custom_tag}
               </span>
             )}
-            <span className="px-2.5 py-1 rounded-lg text-xs font-mono text-slate-400 bg-[#141d31] border border-[#21304a]">
+            <span className="px-2.5 py-1 rounded-lg text-xs font-mono text-[#a2b8b5] bg-[#031d1a] border border-[#134e48]">
               IFSC: {selectedAccount.ifsc_code}
             </span>
           </div>
@@ -120,10 +120,10 @@ export const DailyInspectorPage: React.FC<DailyInspectorPageProps> = ({
         </>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 animate-pulse">
-          <div className="h-28 bg-[#121b2d] rounded-2xl" />
-          <div className="h-28 bg-[#121b2d] rounded-2xl" />
-          <div className="h-28 bg-[#121b2d] rounded-2xl" />
-          <div className="h-28 bg-[#121b2d] rounded-2xl" />
+          <div className="h-28 bg-[#072b27] rounded-2xl" />
+          <div className="h-28 bg-[#072b27] rounded-2xl" />
+          <div className="h-28 bg-[#072b27] rounded-2xl" />
+          <div className="h-28 bg-[#072b27] rounded-2xl" />
         </div>
       )}
 

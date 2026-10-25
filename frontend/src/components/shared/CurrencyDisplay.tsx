@@ -21,14 +21,14 @@ export const CurrencyDisplay: React.FC<CurrencyDisplayProps> = ({
   const num = typeof amount === 'string' ? parseFloat(amount) : (amount ?? 0);
   const formatted = compact ? formatIndianCompact(num) : formatINR(num, showDecimals);
 
-  let colorClass = 'text-slate-100';
+  let colorClass = 'text-[#F0EDE4]';
   if (colored) {
     if (num > 0) {
       colorClass = 'text-emerald-400 font-semibold';
     } else if (num < 0) {
       colorClass = 'text-rose-400 font-semibold';
     } else {
-      colorClass = 'text-slate-400';
+      colorClass = 'text-[#a2b8b5]';
     }
   }
 
