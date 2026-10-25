@@ -7,25 +7,26 @@ updated: 2026-10-25T18:50:00+05:30
 ## Current Position
 
 **Milestone:** Phase 1 MVP Delivery
-**Phase:** 3 - Visualizations & Inter-Company Contra Netting Engine
-**Status:** Phase 2 Delivered, Ready for Phase 3
-**Plan:** Plan 3.1: Inter-Company Netting Engine, Contra Pairing Logic & Audit Log Service
+**Phase:** 4 - Statement Ingestion Rail & Verification
+**Status:** Phase 3 Delivered, Ready for Phase 4
+**Plan:** Plan 4.1: PDF Parser Engine for SBI, ICICI, HDFC Statements with Regex Fallback
 
 ## Last Action
 
-Executed and verified all tasks in Phase 2 (Plans 2.1, 2.2, 2.3):
-- Implemented `DailyCashInspectorService` with sub-150ms opening/closing balance derivation (cache read + dynamic ledger fallback).
-- Implemented `GET /api/v1/accounts/{account_id}/daily-ledger` with keyword search and contra exclusion filters.
-- Built `DateInspectorPicker`, `MetricsBar`, `ContraBadge`, and `TransactionRegister` frontend components.
-- Added 100% passing automated tests in `test_daily_calculator.py` and `test_daily_ledger_api.py`.
-- Verified production frontend build (`npm run build`) passing cleanly in 9.77s.
+Executed and verified all tasks in Phase 3 (Plans 3.1, 3.2, 3.3):
+- Implemented `InterCompanyNettingEngine` with ±48h window matching, contra pairing, and MCA Rule 3 immutable audit trails.
+- Added API endpoints for `/intercompany/pairs`, `/intercompany/scan`, and `/intercompany/override`.
+- Passed 100% automated pytest tests in `test_netting_engine.py`.
+- Implemented Chart.js intraday waterfall visualizer (`CashWaterfallChart.tsx`) in <200ms render time.
+- Built `IntercompanyNettingPage.tsx` with contra roster and MCA override modal.
+- Verified frontend production build passing in 11.36s.
 
 ## Next Steps
 
-1. Execute Phase 3: Visualizations & Inter-Company Contra Netting Engine
-   - Plan 3.1: Implement `InterCompanyNettingEngine` with ±48h window matching, confidence scoring, contra pairing, and MCA Rule 3 immutable audit logging.
-   - Plan 3.2: Implement Chart.js intraday balance waterfall component and endpoints.
-   - Plan 3.3: Implement Inter-Company Reconciliation Center UI with manual contra overrides.
+1. Execute Phase 4: Statement Ingestion Rail & Verification
+   - Plan 4.1: Implement specialized statement parsers for SBI, ICICI, and HDFC (CSV, XLSX, PDF text tables) with regex fallback.
+   - Plan 4.2: Build Statement Upload Wizard & Reconciliation UI in frontend.
+   - Plan 4.3: Execute full end-to-end integration verification, launch development server, and deliver final walkthrough.
 
 ## Active Decisions
 

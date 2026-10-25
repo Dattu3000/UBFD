@@ -49,20 +49,20 @@ updated: 2026-10-25T18:50:00+05:30
 ---
 
 ### Phase 3: Visualizations & Inter-Company Contra Netting Engine
-**Status:** 🔄 Ready
+**Status:** ✅ Complete
 **Objective:** Build the Inter-Company Netting Engine with ±48h auto-pairing, contra tag propagation, MCA Rule 3 immutable audit trails, and integrate Chart.js intraday waterfall visualizer.
 **Depends on:** Phase 2
 **Requirements:** REQ-04, REQ-08
 
 **Plans:**
-- [ ] Plan 3.1: Inter-Company Netting Engine, Contra Pairing Logic & Audit Log Service (`01-netting-engine.md`)
-- [ ] Plan 3.2: Chart.js Canvas Waterfall Sequence & Group Cash Rollup Trajectory (`02-waterfall-chart-and-group-summary.md`)
-- [ ] Plan 3.3: Inter-Company Reconciliation Center UI with Contra Badges & Overrides (`03-intercompany-reconciliation-ui.md`)
+- [x] Plan 3.1: Inter-Company Netting Engine, Contra Pairing Logic & Audit Log Service (`01-netting-engine.md`)
+- [x] Plan 3.2: Chart.js Canvas Waterfall Sequence & Group Cash Rollup Trajectory (`02-waterfall-chart-and-group-summary.md`)
+- [x] Plan 3.3: Inter-Company Reconciliation Center UI with Contra Badges & Overrides (`03-intercompany-reconciliation-ui.md`)
 
 ---
 
 ### Phase 4: Statement Ingestion Rail & Verification
-**Status:** ⬜ Not Started
+**Status:** 🔄 Ready
 **Objective:** Implement multi-bank PDF/CSV table extraction for SBI, ICICI, and HDFC statements, create the Ingestion Wizard UI, and execute comprehensive end-to-end verification.
 **Depends on:** Phase 3
 **Requirements:** REQ-07, REQ-09
@@ -80,6 +80,6 @@ updated: 2026-10-25T18:50:00+05:30
 |-------|--------|-------------|----------------|--------|
 | Phase 1: Foundation & Data Architecture | ✅ Complete | 3 | 3 | Sprint 1 |
 | Phase 2: Core Daily Cash Inspector | ✅ Complete | 3 | 3 | Sprint 2 |
-| Phase 3: Visualizations & Inter-Co Netting | 🔄 Ready | 3 | 0 | Sprint 3 |
-| Phase 4: Ingestion Rail & Verification | ⬜ Not Started | 3 | 0 | Sprint 4 |
-| **Total** | | **12** | **6** | |
+| Phase 3: Visualizations & Inter-Co Netting | ✅ Complete | 3 | 3 | Sprint 3 |
+| Phase 4: Ingestion Rail & Verification | 🔄 Ready | 3 | 0 | Sprint 4 |
+| **Total** | | **12** | **9** | |
