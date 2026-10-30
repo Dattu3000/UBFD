@@ -11,6 +11,8 @@ from app.models.entity import Entity
 from app.models.transaction import Transaction
 from app.services.netting_engine import InterCompanyNettingEngine
 from app.core.config import settings
+from app.core.crypto import VaultCrypto
+from app.services.audit_service import AuditService
 
 
 class AccountAggregatorService:
@@ -473,6 +475,8 @@ class AccountAggregatorService:
 
         raw_acc = account_number.strip().replace(" ", "")
         mask = f"XXXX-XXXX-{raw_acc[-4:]}" if len(raw_acc) >= 4 else f"XXXX-{raw_acc}"
+        enc_acc = VaultCrypto.encrypt_field(raw_acc, associated_data=str(tenant_id))
+        bi_acc = VaultCrypto.compute_blind_index(raw_acc)
 
         account = BankAccount(
             tenant_id=tenant_id,
@@ -480,7 +484,8 @@ class AccountAggregatorService:
             bank_name=bank_name.strip(),
             bank_code=bank_code.upper().strip(),
             account_number_mask=mask,
-            account_number_encrypted=f"ENC_{raw_acc}",
+            account_number_encrypted=enc_acc,
+            account_number_blind_index=bi_acc,
             ifsc_code=ifsc_code.upper().strip(),
             account_type=account_type.upper().strip(),
             opening_balance=opening_balance,
@@ -491,4 +496,21 @@ class AccountAggregatorService:
         db.add(account)
         await db.commit()
         await db.refresh(account)
+
+        audit_service = AuditService(db)
+        await audit_service.log_event(
+            tenant_id=tenant_id,
+            table_name="bank_accounts",
+            record_id=str(account.account_id),
+            action="ADD_DIRECT_ACCOUNT",
+            old_values=None,
+            new_values={
+                "bank_name": account.bank_name,
+                "mask": account.account_number_mask,
+                "ifsc": account.ifsc_code,
+                "entity_name": entity.name,
+            },
+            user_id="direct_linking",
+        )
+
         return account

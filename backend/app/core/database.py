@@ -54,22 +54,26 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
 async def set_tenant_rls_context(session: AsyncSession, tenant_id: UUID) -> None:
     """
     Enforces PostgreSQL Row-Level Security (RLS) tenant context.
+    Uses parameterized query and strict UUID validation to prevent SQL injection.
     Safely no-ops when running against SQLite in local development/test mode.
     """
     if "postgresql" in settings.DATABASE_URL:
+        validated_uuid = str(UUID(str(tenant_id)))
         await session.execute(
-            text(f"SET LOCAL app.current_tenant_id = '{str(tenant_id)}'")
+            text("SELECT set_config('app.current_tenant_id', :tenant_id, true)"),
+            {"tenant_id": validated_uuid},
         )
 
 
 async def init_db() -> None:
     """
-    Creates database schema if tables do not exist.
+    Creates database schema if tables do not exist and applies non-destructive schema migrations.
     """
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
-        # SQLite lightweight column migration for live account & consent additions
+        # SQLite lightweight column migration for zero-downtime local environments
         if "sqlite" in settings.DATABASE_URL:
+            # 1. bank_accounts table
             res = await conn.execute(text("PRAGMA table_info(bank_accounts)"))
             cols = [row[1] for row in res.fetchall()]
             if cols:
@@ -77,3 +81,24 @@ async def init_db() -> None:
                     await conn.execute(text("ALTER TABLE bank_accounts ADD COLUMN is_live BOOLEAN NOT NULL DEFAULT 0"))
                 if "consent_id" not in cols:
                     await conn.execute(text("ALTER TABLE bank_accounts ADD COLUMN consent_id VARCHAR(36)"))
+                if "account_number_blind_index" not in cols:
+                    await conn.execute(text("ALTER TABLE bank_accounts ADD COLUMN account_number_blind_index VARCHAR(64)"))
+
+            # 2. entities table
+            res = await conn.execute(text("PRAGMA table_info(entities)"))
+            ent_cols = [row[1] for row in res.fetchall()]
+            if ent_cols:
+                if "gstin_blind_index" not in ent_cols:
+                    await conn.execute(text("ALTER TABLE entities ADD COLUMN gstin_blind_index VARCHAR(64)"))
+                if "pan_blind_index" not in ent_cols:
+                    await conn.execute(text("ALTER TABLE entities ADD COLUMN pan_blind_index VARCHAR(64)"))
+
+            # 3. audit_logs table
+            res = await conn.execute(text("PRAGMA table_info(audit_logs)"))
+            audit_cols = [row[1] for row in res.fetchall()]
+            if audit_cols:
+                if "prev_hash" not in audit_cols:
+                    await conn.execute(text("ALTER TABLE audit_logs ADD COLUMN prev_hash VARCHAR(64) NOT NULL DEFAULT '0000000000000000000000000000000000000000000000000000000000000000'"))
+                if "row_hash" not in audit_cols:
+                    await conn.execute(text("ALTER TABLE audit_logs ADD COLUMN row_hash VARCHAR(64) NOT NULL DEFAULT '0000000000000000000000000000000000000000000000000000000000000000'"))
+

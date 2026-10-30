@@ -8,6 +8,8 @@ from sqlalchemy.orm import selectinload
 
 from app.core.database import get_db
 from app.api.dependencies import get_current_user
+from app.core.crypto import VaultCrypto
+from app.services.audit_service import AuditService
 from app.models.entity import Entity
 from app.models.account import BankAccount
 from app.schemas.auth_schema import UserContext
@@ -47,14 +49,16 @@ async def list_entities(
         total_liq = sum(
             (acc.current_cleared_balance for acc in ent.accounts), Decimal("0.00")
         )
+        decrypted_pan = VaultCrypto.decrypt_field(ent.pan, associated_data=str(ent.tenant_id))
+        decrypted_gstin = VaultCrypto.decrypt_field(ent.gstin, associated_data=str(ent.tenant_id))
         output.append(
             EntityOut(
                 id=ent.id,
                 tenant_id=ent.tenant_id,
                 name=ent.name,
                 entity_type=ent.entity_type, # type: ignore
-                gstin=ent.gstin,
-                pan=ent.pan,
+                gstin=decrypted_gstin,
+                pan=decrypted_pan,
                 base_currency=ent.base_currency,
                 total_liquidity=total_liq,
                 account_count=len(ent.accounts),
@@ -71,27 +75,52 @@ async def create_entity(
 ):
     """
     Register a new legal business entity under the active tenant.
+    Enforces AES-256-GCM Envelope Encryption on PAN/GSTIN and indexes with HMAC-SHA256 blind indexing.
+    Logs an immutable MCA Rule 3(1) hash chain audit record.
     """
+    enc_pan = VaultCrypto.encrypt_field(entity_in.pan, associated_data=str(current_user.tenant_id))
+    enc_gstin = VaultCrypto.encrypt_field(entity_in.gstin, associated_data=str(current_user.tenant_id))
+    bi_pan = VaultCrypto.compute_blind_index(entity_in.pan)
+    bi_gstin = VaultCrypto.compute_blind_index(entity_in.gstin)
+
     new_entity = Entity(
         id=uuid.uuid4(),
         tenant_id=current_user.tenant_id,
         name=entity_in.name,
         entity_type=entity_in.entity_type,
-        gstin=entity_in.gstin,
-        pan=entity_in.pan,
+        gstin=enc_gstin,
+        gstin_blind_index=bi_gstin,
+        pan=enc_pan,
+        pan_blind_index=bi_pan,
         base_currency=entity_in.base_currency,
     )
     db.add(new_entity)
     await db.commit()
     await db.refresh(new_entity)
 
+    audit_service = AuditService(db)
+    await audit_service.log_event(
+        tenant_id=current_user.tenant_id,
+        table_name="entities",
+        record_id=str(new_entity.id),
+        action="CREATE_ENTITY",
+        old_values=None,
+        new_values={
+            "name": new_entity.name,
+            "entity_type": new_entity.entity_type,
+            "has_pan": bool(new_entity.pan),
+            "has_gstin": bool(new_entity.gstin),
+        },
+        user_id=current_user.email,
+    )
+
     return EntityOut(
         id=new_entity.id,
         tenant_id=new_entity.tenant_id,
         name=new_entity.name,
         entity_type=new_entity.entity_type, # type: ignore
-        gstin=new_entity.gstin,
-        pan=new_entity.pan,
+        gstin=entity_in.gstin,
+        pan=entity_in.pan,
         base_currency=new_entity.base_currency,
         total_liquidity=Decimal("0.00"),
         account_count=0,
@@ -210,7 +239,14 @@ async def create_bank_account(
     # Derive mask if not explicit
     mask = acc_in.account_number_mask
     if not mask and acc_in.account_number_raw:
-        mask = f"•••• {acc_in.account_number_raw[-4:]}"
+        clean_raw = acc_in.account_number_raw.strip()
+        mask = f"•••• {clean_raw[-4:]}" if len(clean_raw) >= 4 else f"•••• {clean_raw}"
+
+    enc_num = None
+    bi_num = None
+    if acc_in.account_number_raw:
+        enc_num = VaultCrypto.encrypt_field(acc_in.account_number_raw, associated_data=str(current_user.tenant_id))
+        bi_num = VaultCrypto.compute_blind_index(acc_in.account_number_raw)
 
     new_acc = BankAccount(
         account_id=uuid.uuid4(),
@@ -219,6 +255,8 @@ async def create_bank_account(
         bank_name=acc_in.bank_name,
         bank_code=acc_in.bank_code,
         account_number_mask=mask,
+        account_number_encrypted=enc_num,
+        account_number_blind_index=bi_num,
         ifsc_code=acc_in.ifsc_code.upper(),
         account_type=acc_in.account_type,
         opening_balance=acc_in.opening_balance,
@@ -228,6 +266,22 @@ async def create_bank_account(
     db.add(new_acc)
     await db.commit()
     await db.refresh(new_acc)
+
+    audit_service = AuditService(db)
+    await audit_service.log_event(
+        tenant_id=current_user.tenant_id,
+        table_name="bank_accounts",
+        record_id=str(new_acc.account_id),
+        action="LINK_BANK_ACCOUNT",
+        old_values=None,
+        new_values={
+            "bank_name": new_acc.bank_name,
+            "mask": new_acc.account_number_mask,
+            "ifsc": new_acc.ifsc_code,
+            "entity_id": str(new_acc.entity_id),
+        },
+        user_id=current_user.email,
+    )
 
     return BankAccountOut(
         account_id=new_acc.account_id,

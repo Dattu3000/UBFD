@@ -2,6 +2,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.core.middleware import ZeroTrustSecurityMiddleware
 from app.core.config import settings
 from app.core.database import init_db, async_session_factory
 from app.core.seeder import seed_demo_data_if_empty
@@ -21,15 +22,22 @@ async def lifespan(app: FastAPI):
     yield
 
 
+docs_url = f"{settings.API_V1_STR}/docs" if settings.ENABLE_PUBLIC_DOCS else None
+redoc_url = f"{settings.API_V1_STR}/redoc" if settings.ENABLE_PUBLIC_DOCS else None
+openapi_url = f"{settings.API_V1_STR}/openapi.json" if settings.ENABLE_PUBLIC_DOCS else None
+
 app = FastAPI(
     title=settings.PROJECT_NAME,
-    openapi_url=f"{settings.API_V1_STR}/openapi.json",
-    docs_url=f"{settings.API_V1_STR}/docs",
-    redoc_url=f"{settings.API_V1_STR}/redoc",
+    openapi_url=openapi_url,
+    docs_url=docs_url,
+    redoc_url=redoc_url,
     lifespan=lifespan,
 )
 
-# Setup CORS
+# 1. Zero-Trust Security Headers Middleware (OWASP Top 10, HSTS, CSP, Clickjacking mitigation)
+app.add_middleware(ZeroTrustSecurityMiddleware)
+
+# 2. Setup CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.BACKEND_CORS_ORIGINS,
@@ -37,6 +45,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 # Mount API v1 router
 app.include_router(api_router, prefix=settings.API_V1_STR)

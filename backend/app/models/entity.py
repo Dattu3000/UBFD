@@ -26,9 +26,12 @@ class Entity(Base):
     name: Mapped[str] = mapped_column(String(255), nullable=False)
     # Facility types: PVT_LTD, LLP, PROPRIETORSHIP, PARTNERSHIP
     entity_type: Mapped[str] = mapped_column(String(50), default="PVT_LTD", nullable=False)
-    gstin: Mapped[Optional[str]] = mapped_column(String(20), nullable=True, index=True)
-    pan: Mapped[Optional[str]] = mapped_column(String(20), nullable=True, index=True)
+    gstin: Mapped[Optional[str]] = mapped_column(String(255), nullable=True, index=True)
+    gstin_blind_index: Mapped[Optional[str]] = mapped_column(String(64), nullable=True, index=True)
+    pan: Mapped[Optional[str]] = mapped_column(String(255), nullable=True, index=True)
+    pan_blind_index: Mapped[Optional[str]] = mapped_column(String(64), nullable=True, index=True)
     base_currency: Mapped[str] = mapped_column(String(10), default="INR", nullable=False)
+
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         default=lambda: datetime.now(timezone.utc),

@@ -45,7 +45,9 @@ class BankAccount(Base):
     bank_code: Mapped[str] = mapped_column(String(20), nullable=False)
     account_number_mask: Mapped[str] = mapped_column(String(50), nullable=False)
     account_number_encrypted: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
+    account_number_blind_index: Mapped[Optional[str]] = mapped_column(String(64), nullable=True, index=True)
     ifsc_code: Mapped[str] = mapped_column(String(20), nullable=False)
+
     # Facility types: CURRENT, SAVINGS, OVERDRAFT, CASH_CREDIT
     account_type: Mapped[str] = mapped_column(String(50), default="CURRENT", nullable=False)
     opening_balance: Mapped[Decimal] = mapped_column(

@@ -9,9 +9,13 @@ class Settings(BaseSettings):
     API_V1_STR: str = "/api/v1"
     
     # Security
+    ENVIRONMENT: str = "development"
     SECRET_KEY: str = "ubfd-dev-super-secret-key-change-in-production-2026-financial-os"
     ALGORITHM: str = "HS256"
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24  # 24 hours
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 15  # Short-lived access token (OWASP recommendation)
+    REFRESH_TOKEN_EXPIRE_DAYS: int = 7     # Secure refresh token lifespan
+    ENABLE_PUBLIC_DOCS: bool = True        # Disable in strict production
+
     
     # Database (Dual mode: SQLite async for local zero-dependency testing, PostgreSQL async for production)
     DATABASE_URL: str = "sqlite+aiosqlite:///./ubfd.db"

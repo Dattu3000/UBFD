@@ -36,6 +36,8 @@ class AuditLog(Base):
     old_values: Mapped[Optional[str]] = mapped_column(Text, nullable=True)  # JSON string
     new_values: Mapped[Optional[str]] = mapped_column(Text, nullable=True)  # JSON string
     user_id: Mapped[str] = mapped_column(String(100), nullable=False, index=True)
+    prev_hash: Mapped[str] = mapped_column(String(64), nullable=False, default="0" * 64)
+    row_hash: Mapped[str] = mapped_column(String(64), nullable=False, index=True)
     timestamp: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         default=lambda: datetime.now(timezone.utc),
@@ -45,4 +47,6 @@ class AuditLog(Base):
 
     __table_args__ = (
         Index("ix_audit_tenant_table_rec", "tenant_id", "table_name", "record_id"),
+        Index("ix_audit_hash_chain", "tenant_id", "row_hash"),
     )
+
