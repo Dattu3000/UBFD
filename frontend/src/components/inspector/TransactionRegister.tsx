@@ -1,8 +1,8 @@
 import React from 'react';
-import { Search } from 'lucide-react';
 import { TransactionItem } from '@/types/finance';
 import { CurrencyDisplay } from '@/components/shared/CurrencyDisplay';
 import { ContraBadge } from '@/components/inspector/ContraBadge';
+import { VaultSearchBar } from '@/components/inspector/VaultSearchBar';
 
 interface TransactionRegisterProps {
   transactions: TransactionItem[];
@@ -25,17 +25,13 @@ export const TransactionRegister: React.FC<TransactionRegisterProps> = ({
     <div className="bg-[#072b27] border border-[#134e48] rounded-2xl overflow-hidden shadow-xl space-y-4 p-5">
       {/* Search & Filter Header Bar */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
-        {/* Search Input */}
-        <div className="relative flex-1 max-w-md">
-          <Search className="w-4 h-4 text-[#a2b8b5] absolute left-3.5 top-1/2 -translate-y-1/2" />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => onSearchChange(e.target.value)}
-            placeholder="Search narration, counterparty, or UTR/CMS reference..."
-            className="w-full bg-[#031d1a] border border-[#134e48] rounded-xl pl-10 pr-4 py-2 text-xs text-[#F0EDE4] placeholder-[#a2b8b5]/60 focus:outline-none focus:border-[#F0EDE4]"
-          />
-        </div>
+        {/* Blind-Indexed Vault Search Bar */}
+        <VaultSearchBar
+          value={searchQuery}
+          onChange={(q) => onSearchChange(q)}
+          placeholder="Search narration, PAN (ABCDE1234F), GSTIN, or UTR/Ref..."
+          className="max-w-md"
+        />
 
         {/* Filter Controls */}
         <div className="flex items-center gap-3">

@@ -12,6 +12,8 @@ import { AddEntityModal } from '@/components/modals/AddEntityModal';
 import { useAuth } from '@/lib/auth-context';
 import { api } from '@/lib/api-client';
 import { LegalEntity, GroupLiquiditySummary } from '@/types/finance';
+import { useSessionGuard } from '@/security/useSessionGuard';
+import { Shield } from 'lucide-react';
 
 export const AppContent: React.FC = () => {
   const [currentTab, setCurrentTab] = useState<NavigationTab>('overview');
@@ -23,6 +25,11 @@ export const AppContent: React.FC = () => {
   const [showAddEntityModal, setShowAddEntityModal] = useState<boolean>(false);
 
   const { user, token } = useAuth();
+
+  // Zero-Trust Session Guard: 10-minute idle purge & tab-blur privacy curtain
+  const { isCurtainActive, recordActivity } = useSessionGuard({
+    onSessionTimeout: () => setShowAuthModal(true),
+  });
 
   const queryClient = useQueryClient();
 
@@ -149,6 +156,25 @@ export const AppContent: React.FC = () => {
         isOpen={showAddEntityModal}
         onClose={() => setShowAddEntityModal(false)}
       />
+
+      {/* Zero-Trust Privacy Curtain: Blurs screen balances during tab-switch / screen-share */}
+      {isCurtainActive && (
+        <div
+          onClick={recordActivity}
+          className="fixed inset-0 z-50 bg-[#031a18]/70 backdrop-blur-xl flex flex-col items-center justify-center text-center p-6 select-none cursor-pointer transition-all"
+        >
+          <div className="w-16 h-16 rounded-2xl bg-[#072b27] border border-[#134e48] flex items-center justify-center mb-4 shadow-2xl text-emerald-400">
+            <Shield className="w-8 h-8" />
+          </div>
+          <h2 className="text-xl font-bold text-[#F0EDE4] tracking-tight">Zero-Trust Privacy Curtain Active</h2>
+          <p className="text-xs text-[#a2b8b5] mt-1.5 max-w-sm leading-relaxed">
+            Ledger cash balances, account numbers, and statutory identifiers are automatically hidden while the window is out of focus to prevent shoulder-surfing and screen recording.
+          </p>
+          <span className="text-xs font-mono text-emerald-300 mt-5 px-3.5 py-1.5 bg-[#004741] hover:bg-[#005750] border border-[#134e48] rounded-xl shadow-md transition-colors">
+            Click anywhere to resume session
+          </span>
+        </div>
+      )}
     </div>
   );
 };

@@ -6,12 +6,15 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func, and_
 from sqlalchemy.orm import selectinload
 
+import re
+import time
 from app.core.database import get_db
 from app.api.dependencies import get_current_user
 from app.core.crypto import VaultCrypto
 from app.services.audit_service import AuditService
 from app.models.entity import Entity
 from app.models.account import BankAccount
+from app.models.transaction import Transaction
 from app.schemas.auth_schema import UserContext
 from app.schemas.account_schema import (
     EntityCreate,
@@ -168,6 +171,150 @@ async def list_bank_accounts(
             )
         )
     return output
+
+
+# --- Blind-Indexed Vault Search ---
+
+@router.get("/accounts/vault-search")
+async def vault_search(
+    q: str,
+    search_type: Optional[str] = "auto",
+    current_user: UserContext = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """
+    Blind-Indexed Search Endpoint:
+    Deterministically computes salted HMAC-SHA256 blind index on the query
+    to query encrypted fields (PAN, GSTIN, Account Numbers) without full-table decryption in <50ms.
+    """
+    start_time = time.perf_counter()
+    clean_q = q.strip().upper()
+    blind_idx = VaultCrypto.compute_blind_index(clean_q)
+
+    # Detect search type if auto
+    pan_pattern = r"^[A-Z]{5}[0-9]{4}[A-Z]{1}$"
+    gstin_pattern = r"^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$"
+    acct_pattern = r"^[A-Z0-9]{9,22}$"
+
+    detected_type = "NARRATION"
+    if re.match(pan_pattern, clean_q):
+        detected_type = "PAN"
+    elif re.match(gstin_pattern, clean_q):
+        detected_type = "GSTIN"
+    elif re.match(acct_pattern, clean_q) and clean_q.isalnum() and any(c.isdigit() for c in clean_q):
+        detected_type = "ACCOUNT_OR_UTR"
+
+    matched_entities = []
+    matched_accounts = []
+    matched_transactions = []
+
+    # 1. Search Entities via blind index or name
+    ent_stmt = select(Entity).where(
+        Entity.tenant_id == current_user.tenant_id
+    ).options(selectinload(Entity.accounts))
+
+    if detected_type == "PAN" or search_type == "blind_pan":
+        ent_stmt = ent_stmt.where(Entity.pan_blind_index == blind_idx)
+    elif detected_type == "GSTIN" or search_type == "blind_gstin":
+        ent_stmt = ent_stmt.where(Entity.gstin_blind_index == blind_idx)
+    else:
+        ent_stmt = ent_stmt.where(
+            (Entity.pan_blind_index == blind_idx)
+            | (Entity.gstin_blind_index == blind_idx)
+            | (Entity.name.ilike(f"%{q.strip()}%"))
+        )
+
+    entities = (await db.scalars(ent_stmt)).all()
+    for ent in entities:
+        decrypted_pan = VaultCrypto.decrypt_field(ent.pan, associated_data=str(ent.tenant_id))
+        decrypted_gstin = VaultCrypto.decrypt_field(ent.gstin, associated_data=str(ent.tenant_id))
+        matched_entities.append({
+            "id": str(ent.id),
+            "name": ent.name,
+            "entity_type": ent.entity_type,
+            "pan": decrypted_pan,
+            "gstin": decrypted_gstin,
+            "base_currency": ent.base_currency,
+            "linked_accounts_count": len(ent.accounts),
+        })
+
+    # 2. Search Bank Accounts via blind index or mask/name
+    acc_stmt = select(BankAccount).where(
+        BankAccount.tenant_id == current_user.tenant_id
+    ).options(selectinload(BankAccount.entity))
+
+    if detected_type == "ACCOUNT_OR_UTR" or search_type == "blind_account":
+        acc_stmt = acc_stmt.where(
+            (BankAccount.account_number_blind_index == blind_idx)
+            | (BankAccount.account_number_mask.ilike(f"%{clean_q[-4:]}%"))
+        )
+    else:
+        acc_stmt = acc_stmt.where(
+            (BankAccount.account_number_blind_index == blind_idx)
+            | (BankAccount.bank_name.ilike(f"%{q.strip()}%"))
+            | (BankAccount.custom_tag.ilike(f"%{q.strip()}%"))
+        )
+
+    accounts = (await db.scalars(acc_stmt)).all()
+    for acc in accounts:
+        matched_accounts.append({
+            "account_id": str(acc.account_id),
+            "bank_name": acc.bank_name,
+            "bank_code": acc.bank_code,
+            "account_number_mask": acc.account_number_mask,
+            "ifsc_code": acc.ifsc_code,
+            "account_type": acc.account_type,
+            "current_cleared_balance": float(acc.current_cleared_balance),
+            "entity_name": acc.entity.name if acc.entity else "Unknown",
+        })
+
+    # 3. Search Transactions via reference number or narration
+    tx_stmt = select(Transaction).where(
+        Transaction.tenant_id == current_user.tenant_id
+    ).options(selectinload(Transaction.account)).limit(20)
+
+    if detected_type in ("ACCOUNT_OR_UTR", "PAN", "GSTIN"):
+        tx_stmt = tx_stmt.where(
+            (Transaction.reference_number.ilike(f"%{clean_q}%"))
+            | (Transaction.narration.ilike(f"%{clean_q}%"))
+        )
+    else:
+        tx_stmt = tx_stmt.where(
+            (Transaction.narration.ilike(f"%{q.strip()}%"))
+            | (Transaction.counterparty_name.ilike(f"%{q.strip()}%"))
+            | (Transaction.reference_number.ilike(f"%{q.strip()}%"))
+        )
+
+    txs = (await db.scalars(tx_stmt)).all()
+    for tx in txs:
+        amt = float(tx.credit_amount if tx.credit_amount > 0 else tx.debit_amount)
+        tx_type = "CREDIT" if tx.credit_amount > 0 else "DEBIT"
+        matched_transactions.append({
+            "id": str(tx.transaction_id),
+            "transaction_date": tx.transaction_date.isoformat(),
+            "amount": amt,
+            "transaction_type": tx_type,
+            "narration": tx.narration,
+            "counterparty_name": tx.counterparty_name,
+            "reference_number": tx.reference_number,
+            "account_mask": tx.account.account_number_mask if tx.account else None,
+            "bank_name": tx.account.bank_name if tx.account else None,
+        })
+
+    elapsed_ms = round((time.perf_counter() - start_time) * 1000, 2)
+
+    return {
+        "query": q,
+        "detected_type": detected_type,
+        "blind_index": blind_idx,
+        "execution_time_ms": elapsed_ms,
+        "matches": {
+            "entities": matched_entities,
+            "accounts": matched_accounts,
+            "transactions": matched_transactions,
+        },
+        "total_matches": len(matched_entities) + len(matched_accounts) + len(matched_transactions),
+    }
 
 
 @router.get("/accounts/{account_id}", response_model=BankAccountOut)
@@ -360,3 +507,5 @@ async def get_group_liquidity_summary(
         unreconciled_transactions_count=0,
         accounts=account_outs,
     )
+
+

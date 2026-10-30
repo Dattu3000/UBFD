@@ -3,6 +3,7 @@ import { RefreshCw, Building2, Plus, LogIn, UserCircle, LogOut } from 'lucide-re
 import { LegalEntity } from '@/types/finance';
 
 import { useAuth } from '@/lib/auth-context';
+import { AuditChainBadge } from '@/components/security/AuditChainBadge';
 
 interface HeaderProps {
   title: string;
@@ -39,6 +40,9 @@ export const Header: React.FC<HeaderProps> = ({
       </div>
 
       <div className="flex items-center gap-3">
+        {/* MCA Rule 3(1) Cryptographic Integrity Badge */}
+        <AuditChainBadge />
+
         {/* Entity Selector & Add Entity */}
         <div className="flex items-center gap-1.5 bg-[#072b27] border border-[#134e48] px-2.5 py-1.5 rounded-xl shadow-inner">
           <Building2 className="w-3.5 h-3.5 text-[#a2b8b5]" />

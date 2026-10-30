@@ -9,6 +9,7 @@ from app.models.entity import Entity
 from app.models.account import BankAccount, DailyAccountSummary
 from app.models.transaction import Transaction
 from app.api.dependencies import DEMO_TENANT_ID, DEMO_TENANT_NAME, DEMO_TENANT_SLUG
+from app.core.crypto import VaultCrypto
 
 
 async def seed_demo_data_if_empty(db: AsyncSession) -> None:
@@ -29,14 +30,17 @@ async def seed_demo_data_if_empty(db: AsyncSession) -> None:
     db.add(tenant)
     await db.flush()
 
-    # 2. Create 3 Legal Entities
+    # 2. Create 3 Legal Entities with AES-256-GCM Envelope Encryption & Blind Indexing
+    t_id_str = str(DEMO_TENANT_ID)
     entity_retail = Entity(
         id=uuid.UUID("11111111-1111-1111-1111-111111111111"),
         tenant_id=DEMO_TENANT_ID,
         name="Alpha Retailers Pvt Ltd",
         entity_type="PVT_LTD",
-        gstin="27AABCA1234F1Z5",
-        pan="AABCA1234F",
+        gstin=VaultCrypto.encrypt_field("27AABCA1234F1Z5", associated_data=t_id_str),
+        gstin_blind_index=VaultCrypto.compute_blind_index("27AABCA1234F1Z5"),
+        pan=VaultCrypto.encrypt_field("AABCA1234F", associated_data=t_id_str),
+        pan_blind_index=VaultCrypto.compute_blind_index("AABCA1234F"),
         base_currency="INR",
     )
     entity_logistics = Entity(
@@ -44,8 +48,10 @@ async def seed_demo_data_if_empty(db: AsyncSession) -> None:
         tenant_id=DEMO_TENANT_ID,
         name="Sister Logistics LLP",
         entity_type="LLP",
-        gstin="27AAACL5678B1Z2",
-        pan="AAACL5678B",
+        gstin=VaultCrypto.encrypt_field("27AAACL5678B1Z2", associated_data=t_id_str),
+        gstin_blind_index=VaultCrypto.compute_blind_index("27AAACL5678B1Z2"),
+        pan=VaultCrypto.encrypt_field("AAACL5678B", associated_data=t_id_str),
+        pan_blind_index=VaultCrypto.compute_blind_index("AAACL5678B"),
         base_currency="INR",
     )
     entity_infra = Entity(
@@ -53,8 +59,10 @@ async def seed_demo_data_if_empty(db: AsyncSession) -> None:
         tenant_id=DEMO_TENANT_ID,
         name="Apex Infra Projects Ltd",
         entity_type="PVT_LTD",
-        gstin="27AAACA9999K1Z9",
-        pan="AAACA9999K",
+        gstin=VaultCrypto.encrypt_field("27AAACA9999K1Z9", associated_data=t_id_str),
+        gstin_blind_index=VaultCrypto.compute_blind_index("27AAACA9999K1Z9"),
+        pan=VaultCrypto.encrypt_field("AAACA9999K", associated_data=t_id_str),
+        pan_blind_index=VaultCrypto.compute_blind_index("AAACA9999K"),
         base_currency="INR",
     )
     db.add_all([entity_retail, entity_logistics, entity_infra])

@@ -10,6 +10,7 @@ import {
 import { GroupLiquiditySummary, LegalEntity } from '@/types/finance';
 import { CurrencyDisplay } from '@/components/shared/CurrencyDisplay';
 import { EntityFilterBadge } from '@/components/shared/EntityFilterBadge';
+import { MaskedVaultField } from '@/components/security/MaskedVaultField';
 
 interface GroupOverviewPageProps {
   summary: GroupLiquiditySummary | null;
@@ -134,9 +135,18 @@ export const GroupOverviewPage: React.FC<GroupOverviewPageProps> = ({
               <div className="flex items-start justify-between">
                 <div>
                   <h3 className="text-sm font-bold text-[#F0EDE4]">{ent.name}</h3>
-                  <p className="text-[11px] text-[#a2b8b5] font-mono mt-0.5">
-                    GSTIN: {ent.gstin || 'N/A'}
-                  </p>
+                  <div className="space-y-1 mt-1 text-[11px] text-[#a2b8b5]">
+                    <div className="flex items-center gap-1.5">
+                      <span className="font-mono text-[10px] uppercase text-[#a2b8b5]/80">GSTIN:</span>
+                      <MaskedVaultField value={ent.gstin} type="GSTIN" />
+                    </div>
+                    {ent.pan && (
+                      <div className="flex items-center gap-1.5">
+                        <span className="font-mono text-[10px] uppercase text-[#a2b8b5]/80">PAN:</span>
+                        <MaskedVaultField value={ent.pan} type="PAN" />
+                      </div>
+                    )}
+                  </div>
                 </div>
                 <EntityFilterBadge type={ent.entity_type} />
               </div>
